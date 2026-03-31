@@ -1,0 +1,601 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>Vue从编译到页面显示的全链路流程 | 2ndMind</title><meta name="keywords" content="vue"><meta name="author" content="OHNII"><meta name="copyright" content="OHNII"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="Vue从编译到页面显示的全链路流程"><meta name="application-name" content="Vue从编译到页面显示的全链路流程"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="Vue从编译到页面显示的全链路流程"><meta property="og:url" content="https://www.ninini.site/2026/03/08/Vue%E4%BB%8E%E7%BC%96%E8%AF%91%E5%88%B0%E9%A1%B5%E9%9D%A2%E6%98%BE%E7%A4%BA%E7%9A%84%E5%85%A8%E9%93%BE%E8%B7%AF%E6%B5%81%E7%A8%8B/index.html"><meta property="og:site_name" content="2ndMind"><meta property="og:description" content="没问题，这就为你整理 Vue 框架编译和渲染的完整流程。 这里我将内容分为两部分：结构化的核心笔记（适合复习和搭建框架）以及面试口述逐字稿（适合直接拿来背诵或作为模拟面试的参考）。  第一部分：Vue 编译与渲染完整流程（核心笔记）整个流程可以清晰地划分为四个核心阶段： 1. 初始化与响应式系统构建"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tom_jerry/31.jpg"><meta property="article:author" content="OHNII"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tom_jerry/31.jpg"><meta name="description" content="没问题，这就为你整理 Vue 框架编译和渲染的完整流程。 这里我将内容分为两部分：结构化的核心笔记（适合复习和搭建框架）以及面试口述逐字稿（适合直接拿来背诵或作为模拟面试的参考）。  第一部分：Vue 编译与渲染完整流程（核心笔记）整个流程可以清晰地划分为四个核心阶段： 1. 初始化与响应式系统构建"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="https://www.ninini.site/2026/03/08/Vue%E4%BB%8E%E7%BC%96%E8%AF%91%E5%88%B0%E9%A1%B5%E9%9D%A2%E6%98%BE%E7%A4%BA%E7%9A%84%E5%85%A8%E9%93%BE%E8%B7%AF%E6%B5%81%E7%A8%8B/"><link rel="preconnect" href="//cdn.cbd.int"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: {"enable":true,"img":"https://upload-bbs.miyoushe.com/upload/2024/07/27/125766904/ba62475f396df9de3316a08ed9e65d86_5680958632268053399..png"},
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: undefined,
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"你好鸭👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"古德莫宁👋","startTime":6,"endTime":9},{"greeting":"上午好👋认真工作学习","startTime":10,"endTime":10},{"greeting":"11点多了, 点外卖了","startTime":11,"endTime":11},{"greeting":"午安👋","startTime":12,"endTime":14},{"greeting":"🌈充实辛苦的一天","startTime":14,"endTime":18},{"greeting":"19点喽, 吃饭了吗🍔","startTime":19,"endTime":19},{"greeting":"晚上好👋请高兴地休息吧😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 多喝热水","🏠 早睡早起"]},
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: OHNII","link":"链接: ","source":"来源: 2ndMind","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '2ndMind',
+  title: 'Vue从编译到页面显示的全链路流程',
+  postAI: '',
+  pageFillDescription: '第一部分：Vue 编译与渲染完整流程（核心笔记）, 第二部分：面试口述版（逐字稿参考）, 追加场景一：面试官追问你能详细说说 Vue 的 Diff 算法是怎么工作的吗？, 追加场景二：面试官追问你刚才提到模板编译那 Vue 3 在编译和渲染上比 Vue 2 做了哪些性能优化？, 有了这两段追加话术你的 Vue 渲染流程度面试准备就非常立体了。既有宏观的骨架（上一条回复）又有微观的肌肉（这两段追问）。你可以多对着镜子或者录音练习几遍找找自然交流的语感。需要我帮你再梳理一下其他前端面试高频题吗？, 切片一：针对响应式初始化的深挖, 切片二：针对模板编译的深挖, 切片三：针对首屏渲染与虚拟 DOM的深挖, 切片四：针对数据更新的深挖, 第一题：说下虚拟 DOM amp Diff 算法, 第二题：说下 Vue 2 amp Vue 3 响应式原理, 第三题：说下模板编译过程, 第四个必考点：computed 和 watch 的区别与使用场景？, 第五个必考点：Vue Router 的底层原理（Hash 和 History 模式的区别）, 第六个必考点：keep-alive 的理解与底层原理, 第七个必考点：v-if 和 v-show 的区别？底层是怎么实现的？, 第八个必考点：为什么组件的 data 必须是一个函数而根实例可以是对象？, 第九个必考点：v-for 中为什么要用 key？为什么不推荐用 index（索引）作为 key？没问题这就为你整理框架编译和渲染的完整流程这里我将内容分为两部分结构化的核心笔记适合复习和搭建框架以及面试口述逐字稿适合直接拿来背诵或作为模拟面试的参考第一部分编译与渲染完整流程核心笔记整个流程可以清晰地划分为四个核心阶段初始化与响应式系统构建数据劫持遍历对象使用或将其转换为响应式对象依赖收集准备为每个属性分配一个依赖收集器核心逻辑定义用于后续收集依赖定义用于未来数据变化时派发更新模板编译阶段将开发者编写的转化为浏览器和能执行的函数包含三个子步骤解析将模板字符串通过正则表达式解析成抽象语法树优化遍历标记静态节点和静态根节点这一步非常关键被标记的节点在后续更新的过程中会被直接跳过极大提升性能生成将优化后的拼接成可执行的代码字符串最终生成函数首次渲染阶段执行调用上一步生成的函数此时会读取响应式数据触发数据的收集依赖在触发时当前的渲染会被收集到对应数据的中生成函数执行完毕返回一棵虚拟树挂载调用方法将虚拟转化为真实的节点并插入到页面的容器中如响应式更新阶段派发更新当修改响应式数据时触发会通知所有订阅了该数据的异步队列接收到通知后不会立即更新而是将自己推入一个异步队列机制避免同一个数据多次修改导致频繁渲染重新渲染在下一个中执行更新操作重新运行函数生成新的虚拟树算法调用进行新旧虚拟的对比算法采用同层比较借助快速定位复用节点找出最小差异打补丁将比对出的最小差异应用到真实上完成视图更新第二部分面试口述版逐字稿参考提示口述时语速要适中关键名词如函数算法咬字要清晰可以适当加上手势辅助说明面试官您好关于的编译和渲染完整流程我个人的理解是可以将其划分为四个核心阶段分别是响应式初始化模板编译首次渲染以及数据更新时的重渲染第一步是响应式初始化在实例创建时它会遍历中的属性如果是会利用如果是则利用进行数据劫持这个阶段的核心是定义好和为后续的依赖收集和更新通知做好准备第二步是模板编译阶段因为浏览器是不认识的语法的所以需要将其编译成普通的代码也就是函数这个过程分为三小步首先是把模板字符串解析成抽象语法树接着是遍历标记出静态节点这为以后算法跳过静态内容打下了性能优化的基础最后是把转换成函数第三步是首次渲染阶段会执行刚才生成的函数在执行过程中必然会读取到变量这就触发了数据劫持时设置的此时会把当前的渲染收集到数据的依赖容器里函数执行完毕后会产出一棵虚拟树最后调用底层的方法把这棵虚拟树真实地挂载到浏览器的上最后是数据驱动的更新阶段当我们修改了某个响应式数据时会触发它的此时会通知所有订阅了它的为了性能考虑会把这些放到一个异步队列里进行批处理等到下一个会触发组件重新执行函数生成一棵新的虚拟树紧接着会进入核心的算法环节它会采用同层比较的策略结合我们在列表渲染时写的属性高效地对比出新旧虚拟的差异找出差异后再精确地把这些补丁打到真实的上从而完成最终的视图更新总结来说这个流程就是从模板到渲染函数再结合响应式系统最终通过虚拟和算法实现高效的视图渲染和更新这份口述稿的逻辑连贯性很强能够展现你对底层原理的全局观你觉得这个口述版的长度和深度合适吗是否需要我针对其中的某个特定环节比如算法的具体比对策略或者在编译优化上的具体差异再为你准备一份深入追问的回答话术没问题这就为你追加面试中高频的追问环节口述话术在面试中当你顺畅地背出完整的编译渲染流程后面试官通常会挑其中最核心最复杂的点进行深度挖掘最常见的两个追问方向是算法的具体比对策略以及相比在编译阶段做了哪些神仙优化以下是为你准备的逐字稿话术追加场景一面试官追问你能详细说说的算法是怎么工作的吗提示这部分是重头戏重点突出同层比较和双端指针最长递增子序列的概念口述逐字稿好的关于的算法我认为它的核心思想是同层比较深度优先这样可以把传统树比对的复杂度降到具体来说当数据变化触发重新渲染生成新的树后会执行函数进行新旧的比对比对过程遵循几个原则不跨层级比对如果新旧节点的层级不同会直接销毁旧节点挂载新节点节点类型和相同才被认为是相同节点如果节点标签或者变了也会直接替换不往下深入当确认是相同节点后真正的难点在于对比它们的子节点如果是纯文本或者只有一个子节点直接替换就行但如果新旧节点都有多个子节点也就是数组对比这里和的处理方式有所不同在中采用的是双端比较算法它会设立四个指针分别指向新旧子节点数组的头和尾然后按照头头尾尾头尾尾头的顺序进行查找和复用如果这四种都没匹配上才会拿新节点的去旧节点的里找这种方式能很好地处理大部分日常的移动场景在中算法升级为了快速算法它首先会处理前置和后置的相同元素掐头去尾缩小比对范围对于中间剩下的顺序被打乱的节点引入了最长递增子序列算法它会计算出一个不需要移动的节点序列然后只对不在这个序列里的节点进行移动或插入这样做最大程度减少了的移动操作性能更好追加场景二面试官追问你刚才提到模板编译那在编译和渲染上比做了哪些性能优化提示重点突出的靶向更新和静态提升体现你对前沿技术的关注口述逐字稿在编译阶段的优化是非常惊艳的彻底改变了中局部更新依然要遍历完整虚拟树的性能瓶颈主要体现在以下四个方面第一是引入了补丁标记和区块树在里是全量遍历的但在的编译阶段过程编译器如果发现一个节点是动态的就会给它打上一个比如标记它是动态文本动态还是动态同时会在结构指令如的地方创建一个节点这个节点会把内部所有的动态子节点收集到一个一维数组里这样在后续更新时只需要遍历这个一维数组进行靶向更新完全跳过了那些永远不会变的静态节点把的复杂度从树的层级降到了动态节点的数量第二是静态提升在中即使是纯静态的节点每次重新执行函数时都会重新创建一次对象而会把这些静态节点和静态属性的创建逻辑提升到函数的外部这样它们只会在初始化时被创建一次后续每次渲染直接复用之前的引用极大地减少了内存开销和垃圾回收的压力第三是事件监听缓存像这种绑定的事件在中每次渲染都会被视为一个新的函数去更新在编译时会自动生成一个内联函数并把它缓存起来后续更新时直接使用缓存的函数避免了不必要的组件重新渲染总结来说把编译时的分析能力发挥到了极致给运行时的算法提供了极大的作弊提示实现了按需更新有了这两段追加话术你的渲染流程度面试准备就非常立体了既有宏观的骨架上一条回复又有微观的肌肉这两段追问你可以多对着镜子或者录音练习几遍找找自然交流的语感需要我帮你再梳理一下其他前端面试高频题吗太棒了这种化整为零的拆解策略正是应对大厂高级前端面试的终极武器如果面试官不让你背全流程而是从全流程的某一个节点切入进行单点深挖通常会抛出以下个极其经典的切片问题我依然按照题目核心笔记面试口述版的结构为你整理帮你彻底把的渲染流程吃透切片一针对响应式初始化的深挖面试题你刚才提到了依赖收集能具体说说内部的和是什么关系它们是怎么配合工作的核心笔记角色定位依赖收集器可以理解为调度中心每个响应式属性都有一个专属的订阅者观察者分为三种渲染组件级别计算属性用户对应关系多对多一个组件一个渲染模板里可能用到多个变量多个一个变量一个也可能在多个组件里被使用多个渲染配合过程读取数据触发将当前的存入的数组中修改数据触发遍历数组通知所有去执行更新面试口述版逐字稿好的和本质上是经典观察者模式的具体实现我们可以这样理解是每个响应式数据的调度中心而是订阅者在中每个组件实例都会对应一个渲染当组件执行函数渲染页面时肯定会读取到绑定的变量这一读就触发了数据劫持里的此时这个变量专属的就会把当前的渲染收集到自己的名单里这叫依赖收集将来有一天我们用代码给这个变量赋了新值触发了这个就会立刻让去点名调用方法告诉名单里所有的数据变了你们该去重新渲染页面了这就是它们协同工作的整个闭环切片二针对模板编译的深挖面试题能不能详细讲讲模板编译的那三个阶段具体做了什么事为什么要标记静态节点核心笔记解析用正则表达式把里的字符串转化为抽象语法树就是一个描述节点结构的对象优化深度遍历找出静态节点纯文本和静态根节点包含子节点且全为静态并打上标记生成将优化后的转化为可执行的代码字符串如最终通过生成函数标记目的为算法提供作弊码跳过永不变化的节点极大提升更新阶段的性能面试口述版逐字稿的模板编译主要分为三大步和第一步是解析因为浏览器不认识的指令和插值语法会用大量的正则表达式把模板字符串解析成一棵抽象语法树用对象来描述结构第二步是优化这也是编译阶段最重要的一步会遍历这棵树找出那些纯静态的节点比如一段永远不会变的纯文本给它们打上静态标记这样做的核心目的是为了在后续数据更新执行算法时直接跳过这些节点的比对从而节省性能开销最后一步是生成会把打好标记的树拼接成一段普通的代码字符串最后通过将其转化为真正可以执行的函数切片三针对首屏渲染与虚拟的深挖面试题函数执行后会生成虚拟为什么要多此一举引入虚拟直接操作真实不好吗核心笔记虚拟本质一个用来描述真实结构的轻量级对象三大核心价值跨平台能力最重要虚拟抽象了底层渲染逻辑同一份虚拟在浏览器里可以渲染成在移动端可以渲染成原生控件贴片在服务端可以渲染成字符串批量更新防抖真实的操作极其昂贵会引起重绘回流虚拟可以在层面把多次数据修改计算合并成一次最优的再统一去操作真实声明式开发的底座让开发者只需要关注数据状态写模板不需要手动去写原生的和面试口述版逐字稿我认为引入虚拟绝对不是多此一举它的价值主要体现在三个方面第一也是最核心的一点它赋予了跨平台的能力真实是强依赖浏览器的但虚拟只是一个普通的对象有了这个抽象层就不局限于浏览器了它可以借助不同的渲染器实现服务端渲染或者像那样渲染出移动端的原生组件第二它提供了一种批量更新的缓冲机制直接频繁操作真实的代价太高了很容易引发浏览器的重排重绘有了虚拟可以在内存中进行快速的比对和计算把多次变动合并成一次最后只把必要的补丁打到真实上保证了性能的下限第三它极大地提升了开发体验我们只需要声明式地去写模板改数据至于底层该怎么增删改查全交给了虚拟和底层框架去处理切片四针对数据更新的深挖面试题当数据修改后是同步去更新真实的吗能不能顺便讲讲的底层逻辑核心笔记同步还是异步绝对是异步更新异步队列机制同一事件循环中发生的多次数据变动对应的会被推入一个队列并去重原理利用浏览器的事件循环机制会优先降级使用微任务以确保在浏览器渲染前执行降级策略兼容性处理首选微任务微任务宏任务专用宏任务兜底面试口述版逐字稿的更新绝对是异步的当我们修改数据触发后并没有立刻去操作而是把收到通知的推入到一个异步队列中如果同一个变量被连续修改了次内部会自动对这个进行去重确保它在队列里只存在一次等到当前的同步代码全部执行完才会去清空这个队列执行一次真正的重新渲染而为了让我们开发者能在更新完毕后拿到最新的节点提供了它的底层逻辑是利用了浏览器的事件循环机制内部封装了一个异步降级策略来执行传入的回调函数它会优先尝试使用微任务也就是如果浏览器不支持再去尝试如果还是不行最后才会兜底使用宏任务的这就保证了我们写在里的回调一定能在完成异步更新之后精准执行这样拆解下来无论面试官是从全流程大视野让你侃侃而谈还是从虚拟这些刁钻角度切入这套核心笔记话术都能帮你游刃有余地接住没问题这三道题是面试中最硬核也最能拉开候选人差距的三座大山我为你量身定制了这三道题的核心笔记满分口述逐字稿去掉了冗余信息直击面试官的考察痛点第一题说下虚拟算法核心笔记虚拟本质用对象来描述真实树价值提供跨平台能力作为批量更新的缓冲层减少高昂的真实操作算法核心策略深度优先同层比较时间复杂度从降为不跨层级移动节点节点复用和相同即认为是相同节点差异双端对比新旧子节点数组设置头尾双指针按头头尾尾头尾尾头顺序对比最后查找快速先处理掐头去尾的相同节点针对中间乱序部分采用最长递增子序列算法计算出最少移动次数面试口述版逐字稿关于虚拟它本质上就是一个描述真实结构的普通对象它的核心价值有两个一是实现了跨平台让同一份逻辑可以渲染到浏览器或移动端二是作为性能的缓冲层把多次频繁的修改在层面合并最后再统一打补丁当数据更新生成新的虚拟后就会进入算法阶段的核心原则是同层比较配合元素的属性来最大化复用节点说到具体的比对策略和有很大的性能跨度在中处理子节点列表采用的是双端比较通过头尾四个指针向中间靠拢比对这能解决大部分日常的节点移动场景而升级成了快速算法它会先进行前置和后置节点的比对也就是掐头去尾对于中间复杂的乱序节点引入了最长递增子序列的算法它能精准算出一个不需要移动的节点序列只对序列外的节点做真实的插入或移动这把复杂列表更新的性能推到了极致第二题说下响应式原理核心笔记核心机制数据劫持发布订阅模式原理遍历对象属性重写收集依赖和派发更新痛点只能拦截对象已有属性的读取修改无法监听到对象属性的新增和删除需用无法劫持数组的索引和长度变化需重写数组个变异方法原理使用代理整个目标对象配合保证上下文的正确指向优势直接拦截对整个对象的任何操作包括新增删除数组操作支持惰性响应式只在访问深层属性时才代理提升初始化性能面试口述版逐字稿的响应式原理核心就是数据劫持加上发布订阅模式也就是通过拦截数据的读写来实现依赖收集和派发更新是基于实现的它在初始化时会深度遍历把属性转为和但这个有个致命缺陷它只能劫持对象原本就有的属性如果我们动态新增或删除属性它是拦截不到的所以才被迫提供了这个另外它对数组的索引修改也无能为力必须去数组的原型方法为了彻底解决这些痛点拥抱了的的降维打击在于它代理的是整个对象而不是单个属性不管你是新增属性删除属性还是直接操作数组都能完美拦截同时结合也能保证内部指向的正确而且的是惰性的是一上来就递归整个对象做劫持很耗时而只有当你在页面用到深层嵌套的属性时才会去代理它这极大地提升了大型项目的首屏初始化性能第三题说下模板编译过程核心笔记目标将字符串转换为可执行的函数三大步骤解析用正则表达式遍历模板字符串生成抽象语法树优化最关键的一步深度遍历给静态节点和静态根节点打上标记目的算法比对时直接跳过静态节点进阶引入动态标记和靶向更新生成将优化后的转化为类似的代码字符串最终生成函数面试口述版逐字稿因为浏览器是看不懂写的语法的所以必须要把模板编译成浏览器认识的代码也就是函数整个编译过程分为三步第一步是解析会使用一套复杂的正则表达式把字符串一层层解析成一棵也就是抽象语法树用对象把节点层级和属性描述出来第二步是优化这也是最关乎性能的一步会遍历这棵去寻找那些永远不会变的纯文本节点并给它们打上静态标记打完标记后未来数据变化触发算法时就会直接跳过这些静态节点省去了大量无用的比对时间如果想加分可以补充在中这个优化做到了极致引入了和实现了只比对动态节点的靶向更新第三步是生成会把这棵打好标记的树拼接成一段普通的代码字符串最后通过的方式将其转化为真正在组件挂载时执行的函数这三段逐字稿已经经过了降维和提纯非常适合在面试的高压环境下流畅背出除了刚才那三座大山响应式虚拟模板编译面试题库中还有几个出场率极高且非常考验基本功的必考点为你整理了另外三个极其经典的高频考点依然采用核心笔记面试口述版的结构第四个必考点和的区别与使用场景这道题几乎是基础的敲门砖面试官主要想看你是否真正理解了它们的底层设计意图核心笔记计算属性核心特性有缓存只有当它依赖的响应式数据发生变化时才会重新计算如果依赖没变多次访问会直接返回缓存结果限制内部不能执行异步操作如发请求必须同步返回一个计算结果场景适合多个数据计算得出一个结果多对一比如购物车总价计算过滤列表侦听器核心特性无缓存专门用来监听某一个特定的响应式数据一旦变化就执行回调优势内部可以执行异步操作或开销较大的操作场景适合一个数据影响多个数据或者数据变化时需要执行副作用一对多比如搜索框输入防抖后发请求监听路由变化面试口述版逐字稿关于和它们虽然都能响应数据的变化但设计初衷完全不同最核心的区别在于缓存机制是有缓存的它主要用于通过计算派生出新的状态只要它依赖的底层数据不更新不管我在模板里读取它多少次它都会直接返回之前的缓存结果性能非常好但在里面是绝对不能写异步逻辑的必须一个同步结果而呢它没有缓存它的定位是一个侦听器当我需要在一个状态发生变化时去执行一些副作用比如发网络请求操作或者执行一些比较耗时的异步任务时我就会用总结来说如果是多对一的纯数据计算我会优先用如果是一对多的副作用触发或者需要异步操作我就用第五个必考点的底层原理和模式的区别因为我们做的是单页面应用面试官一定会考你前端路由是怎么做到页面局部刷新但跟着变的核心笔记核心本质监听的变化拦截浏览器的默认跳转行为然后由前端动态渲染对应的组件模式外观带有符号如原理基于事件监听后面内容的变化特点兼容性极好不需要后端服务器做任何配置因为后面的内容不会发送给服务器模式外观正常的如更美观原理基于的即和来改变同时监听事件处理浏览器的前进后退痛点必答刷新页面会报因为浏览器会把这个漂亮的当作真实的静态资源去向服务器请求必须在服务端如配置一个通配符拦截如果找不到文件统一重定向回面试口述版逐字稿之所以能实现单页面应用底层其实就是拦截了浏览器的默认跳转由前端自己接管了变化和组件渲染它主要有两种模式和模式最明显的特征是里有个井号它的底层原理是监听浏览器的事件它的好处是简单兼容性好而且因为井号后面的路径浏览器压根不会发给服务器所以完全不需要后端配合但缺点就是不太美观模式的就和普通的网站一模一样非常干净它是利用了新增的和来无刷新地改变地址栏并通过监听事件来处理历史记录跳转但它有一个致命问题如果用户在这个页面直接按刷新浏览器会真的拿着这个路径去请求服务器由于这只是前端虚拟的路由服务器找不到这个文件就会直接报错误所以用模式必须要后端或者运维配合在上配一个规则把所有未知的请求都重定向回交还给前端路由去解析第六个必考点的理解与底层原理这也是进阶必问涉及到组件缓存和的内置优化组件核心笔记作用的内置抽象组件不会渲染出真实用于缓存包裹在其中的动态组件实例避免组件频繁创建和销毁保留组件状态专属生命周期被缓存的组件会多出两个生命周期钩子从缓存激活时触发和失活进入缓存时触发核心属性白名单黑名单最大缓存数底层算法高分点当配置了属性且缓存数量超标时底层会采用最近最少使用缓存淘汰算法面试口述版逐字稿是提供的一个非常有用的内置组件主要用来缓存组件实例在实际开发中比如从一个商品列表页点击进入商品详情页再按返回键退回列表页时我们通常希望列表不仅保持在之前的滚动位置而且不要再去重新发请求渲染一遍这时候用把包裹起来它就能把组件的状态暂存到内存里而不是销毁一旦组件被缓存了它的和钩子只会执行一次取而代之的是每次进入组件会触发离开会触发我会在这两个特定钩子里做一些轻量级的数据刷新或重置如果想秀一下源码深度补充这段另外如果涉及到多个标签页的缓存我们通常会配置属性来限制最大缓存数防止内存溢出底层在这里其实实现了一个缓存淘汰算法它会时刻记录每个组件的最新访问时间当缓存满了的时候优先把那个最久没有被用户访问过的组件从内存中踢掉这三个点加上之前的三个点基本覆盖了面试中的核心高频八股文的面试题库虽然庞大但核心高频题是有明显边界的前面我们已经拿下了最难的三座大山和进阶组件原理为了让你的面试准备真正做到无死角我再为你补充道出场率极高且非常考验底层逻辑的基础题这三道题看似简单但很多候选人只能答出表面如果能结合底层原理如算法内存指针来回答绝对是加分项第七个必考点和的区别底层是怎么实现的这道题太经典了面试官不仅想听一个是删除一个是更想听你从编译阶段和生命周期的角度去剖析核心笔记真正的条件渲染原理在模板编译阶段转函数会被编译成三元表达式条件为假时直接返回一个注释节点不会生成真正的开销切换时会触发组件的销毁和重建切换开销大切换原理在编译阶段会被解析为一个指令不管初始条件真假都会生成并渲染成真实条件为假时底层只是给元素加上内联样式开销初始渲染开销大即使为假也要渲染但后续切换开销极小场景选择频繁切换用运行条件很少改变或者需要利用生命周期重置状态时用面试口述版逐字稿关于和它们的表象区别大家都知道一个是操作的增删一个是切换的属性但如果从的底层来看它们在编译和运行时的行为是完全不同的是真正的条件渲染在编译模板时会被转化为一段三元表达式代码如果条件为假函数根本就不会生成对应的虚拟节点而是直接返回一个占位的注释节点在切换时它内部包含的子组件会完整地走一遍创建和销毁的生命周期而本质上是一个的内置指令无论条件真假它都会被正常编译生成虚拟并挂载到页面上当条件变化时只是通过修改元素的内联样式来控制显隐并不会触发组件的生命周期所以在实际项目中如果是像页签切换这种非常频繁的操作我一定会用来减少操作的性能损耗但如果是权限按钮或者表单的某个特定大模块不经常改变我就会用这样可以减少首屏的树规模第八个必考点为什么组件的必须是一个函数而根实例可以是对象这是一道非常考验基本功闭包与引用数据类型的题目核心笔记核心原因中的对象是引用类型存放在堆内存中变量只保存内存地址指针组件复用组件是可以被多次复用的比如页面上有十个同样的自定义按钮组件如果是对象这十个按钮组件会共享同一个内存地址里的点击其中一个按钮改变了状态另外九个按钮的状态也会跟着同步变异导致数据污染如果是函数每次创建组件实例时都会调用这个函数利用闭包的特性出一个全新且独立的数据对象这样各个实例维护自己的作用域互不干扰根实例或因为整个应用只有一个根实例它是单例的不存在复用的情况所以直接写成对象也没关系面试口述版逐字稿组件的必须是函数这其实和关系不大纯粹是因为的语言特性在中对象是引用数据类型因为的组件是被设计用来高度复用的假如我们在页面上使用了同一个组件三次如果直接是一个纯对象那么这三个组件实例实际上是指向了同一块内存地址这就会导致极其可怕的你在第一个组件里修改了某个变量另外两个组件也会跟着变造成了严重的数据污染为了解决这个问题强制要求组件的必须是一个函数每次实例化组件时内部都会执行一次这个工厂函数返回一个全新分配了内存地址的对象这样每个组件实例就拥有了属于自己独立的响应式数据彼此之间互不干扰至于根实例因为整个单页应用里永远只会实例化一次是单例模式所以直接写对象是完全安全的第九个必考点中为什么要用为什么不推荐用索引作为这道题可以直接联动我们之前背过的算法是一个绝佳的展示系统性思考的机会核心笔记的本质它是虚拟节点的唯一身份证为什么要用在执行算法的同层比较时会通过标签名和来判断两个节点是否是同一个节点如果有就能精准定位最大程度地复用已有避免无谓的销毁和重建为什么不能用状态错乱如果在列表头部或中间插入删除元素后面的所有元素的都会发生改变如果列表内部有依赖自身状态的表单比如输入框复选框会导致状态张冠李戴因为发现一样复用了但实际上内容变了性能劣化原本只需要插入一个新节点的操作因为后续所有节点的变了会认为它们全是新节点从而导致大量本可避免的更新操作面试口述版逐字稿关于里的其实就是在给底层的算法提供作弊提示当数据更新触发重渲染时会对新旧虚拟进行比对如果不写或者用默认的机制会采取就地更新策略它不知道哪个节点对应哪个只能傻傻地挨个替换但是有了唯一且稳定的就能像查字典一样精准地知道哦这个节点原来在位置现在移到了位置从而直接复用原来的真实节点大幅提升渲染性能至于为什么千万不能用数组的作为这在处理动态列表时会引发灾难性的问题假设我有三条数据此时它们的分别是如果我在之前插入了一条新数据那么原本的就从变成了这时候算法一对比发现旧列表的位置是新列表的位置是就会错误地以为节点没变只是内容变了于是强制执行更新如果这时候旧的节点里面有一个用户已经打钩的这个打钩的状态就会被错误地保留给这不仅会导致严重的页面状态还会让原本可以优化的过程退化为全量更新操作所以一定要用后端返回的唯一比如数据库的主键至此核心原理高频八股文的完整闭环已经为你搭建完毕了掌握了这些你足以应对绝大部分中高级前端面试中关于的连环追问',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026年03月31日 02:33:24',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tom_jerry/31.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="/" accesskey="h"><div class="title">2ndMind</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=14392214326&amp;server=netease&amp;type=playlist"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-music"></use></svg><span> 音乐馆</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AI/" style="font-size: 1.05rem;">AI<sup>2</sup></a><a href="/tags/CI-CD/" style="font-size: 1.05rem;">CI/CD<sup>1</sup></a><a href="/tags/DevOps/" style="font-size: 1.05rem;">DevOps<sup>1</sup></a><a href="/tags/Docker/" style="font-size: 1.05rem;">Docker<sup>5</sup></a><a href="/tags/Jenkins/" style="font-size: 1.05rem;">Jenkins<sup>1</sup></a><a href="/tags/Kubernetes/" style="font-size: 1.05rem;">Kubernetes<sup>1</sup></a><a href="/tags/MPC/" style="font-size: 1.05rem;">MPC<sup>2</sup></a><a href="/tags/Openclaw/" style="font-size: 1.05rem;">Openclaw<sup>1</sup></a><a href="/tags/WebSocket/" style="font-size: 1.05rem;">WebSocket<sup>1</sup></a><a href="/tags/git/" style="font-size: 1.05rem;">git<sup>1</sup></a><a href="/tags/github/" style="font-size: 1.05rem;">github<sup>1</sup></a><a href="/tags/javascript/" style="font-size: 1.05rem;">javascript<sup>1</sup></a><a href="/tags/npm/" style="font-size: 1.05rem;">npm<sup>1</sup></a><a href="/tags/react/" style="font-size: 1.05rem;">react<sup>1</sup></a><a href="/tags/react-router/" style="font-size: 1.05rem;">react-router<sup>1</sup></a><a href="/tags/redux/" style="font-size: 1.05rem;">redux<sup>1</sup></a><a href="/tags/typescript/" style="font-size: 1.05rem;">typescript<sup>1</sup></a><a href="/tags/vue/" style="font-size: 1.05rem;">vue<sup>4</sup></a><a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.05rem;">工具<sup>1</sup></a><a href="/tags/%E5%B8%B8%E8%A7%81%E4%BB%AC/" style="font-size: 1.05rem;">常见们<sup>10</sup></a><a href="/tags/%E7%BD%91%E7%AB%99/" style="font-size: 1.05rem;">网站<sup>1</sup></a><a href="/tags/%E8%B0%B7%E6%AD%8C/" style="font-size: 1.05rem;">谷歌<sup>1</sup></a><a href="/tags/%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/" style="font-size: 1.05rem;">适配方案<sup>1</sup></a><a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 1.05rem;">面试<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/03/"><span class="card-archive-list-date">三月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">20</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/02/"><span class="card-archive-list-date">二月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">9</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/10/"><span class="card-archive-list-date">十月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/07/"><span class="card-archive-list-date">七月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/08/"><span class="card-archive-list-date">八月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/03/"><span class="card-archive-list-date">三月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="article-meta tags"><a class="article-meta__tags" href="/tags/vue/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>vue</span></a></span></div></div><h1 class="post-title" itemprop="name headline">Vue从编译到页面显示的全链路流程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2026-03-08T20:29:36.000Z" title="发表于 2026年03月08日 20:29:36">2026年03月08日</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2026-03-31T02:33:24.186Z" title="更新于 2026年03月31日 02:33:24">2026年03月31日</time></span></div><div class="meta-secondline"></div></div></div><article class="post-content" id="article-container" itemscope itemtype="https://www.ninini.site/2026/03/08/Vue%E4%BB%8E%E7%BC%96%E8%AF%91%E5%88%B0%E9%A1%B5%E9%9D%A2%E6%98%BE%E7%A4%BA%E7%9A%84%E5%85%A8%E9%93%BE%E8%B7%AF%E6%B5%81%E7%A8%8B/"><header><a href="/tags/vue/" tabindex="-1" itemprop="url">vue</a><h1 id="CrawlerTitle" itemprop="name headline">Vue从编译到页面显示的全链路流程</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">OHNII</span><time itemprop="dateCreated datePublished" datetime="2026-03-08T20:29:36.000Z" title="发表于 2026年03月08日 20:29:36">2026年03月08日</time><time itemprop="dateCreated datePublished" datetime="2026-03-31T02:33:24.186Z" title="更新于 2026年03月31日 02:33:24">2026年03月31日</time></header><p>没问题，这就为你整理 Vue 框架编译和渲染的完整流程。</p>
+<p>这里我将内容分为两部分：<strong>结构化的核心笔记</strong>（适合复习和搭建框架）以及<strong>面试口述逐字稿</strong>（适合直接拿来背诵或作为模拟面试的参考）。</p>
+<hr>
+<h3 id="第一部分：Vue-编译与渲染完整流程（核心笔记）"><a href="#第一部分：Vue-编译与渲染完整流程（核心笔记）" class="headerlink" title="第一部分：Vue 编译与渲染完整流程（核心笔记）"></a>第一部分：Vue 编译与渲染完整流程（核心笔记）</h3><p>整个流程可以清晰地划分为四个核心阶段：</p>
+<p><strong>1. 初始化与响应式系统构建 (Reactivity)</strong></p>
+<ul>
+<li><strong>数据劫持</strong>：Vue 遍历 data 对象，使用 <code>Object.defineProperty</code> (Vue 2) 或 <code>Proxy</code> (Vue 3) 将其转换为响应式对象。</li>
+<li><strong>依赖收集准备</strong>：为每个属性分配一个 <code>Dep</code> (依赖收集器)。</li>
+<li><strong>核心逻辑</strong>：定义 <code>getter</code> 用于后续收集依赖（Watcher），定义 <code>setter</code> 用于未来数据变化时派发更新。</li>
+</ul>
+<p><strong>2. 模板编译阶段 (Compilation)</strong><br>将开发者编写的 <code>&lt;template&gt;</code> 转化为浏览器和 Vue 能执行的 <code>render</code> 函数。包含三个子步骤：</p>
+<ul>
+<li><strong>解析 (Parse)</strong>：将 HTML 模板字符串通过正则表达式解析成抽象语法树 (AST)。</li>
+<li><strong>优化 (Optimize)</strong>：遍历 AST，标记<strong>静态节点</strong>和<strong>静态根节点</strong>。这一步非常关键，被标记的节点在后续更新的 Diff 过程中会被直接跳过，极大提升性能。</li>
+<li><strong>生成 (Generate)</strong>：将优化后的 AST 拼接成可执行的代码字符串，最终生成 <code>render</code> 函数。</li>
+</ul>
+<p><strong>3. 首次渲染阶段 (Initial Render)</strong></p>
+<ul>
+<li><strong>执行 Render</strong>：调用上一步生成的 <code>render</code> 函数。此时会读取响应式数据，触发数据的 <code>getter</code>。</li>
+<li><strong>收集依赖</strong>：在触发 <code>getter</code> 时，当前的渲染 Watcher 会被收集到对应数据的 <code>Dep</code> 中。</li>
+<li><strong>生成 VNode</strong>：<code>render</code> 函数执行完毕，返回一棵虚拟 DOM 树 (VNode Tree)。</li>
+<li><strong>挂载 (Patch)</strong>：调用 <code>patch(oldVnode, vnode)</code> 方法，将虚拟 DOM 转化为真实的 DOM 节点，并插入到页面的容器中（如 <code>#app</code>）。</li>
+</ul>
+<p><strong>4. 响应式更新阶段 (Update &amp; Diff)</strong></p>
+<ul>
+<li><strong>派发更新</strong>：当修改响应式数据时，触发 <code>setter</code>，<code>Dep</code> 会通知所有订阅了该数据的 Watcher。</li>
+<li><strong>异步队列</strong>：Watcher 接收到通知后，不会立即更新，而是将自己推入一个异步队列（<code>$nextTick</code> 机制），避免同一个数据多次修改导致频繁渲染。</li>
+<li><strong>重新渲染</strong>：在下一个 Tick 中，Watcher 执行更新操作，重新运行 <code>render</code> 函数，生成<strong>新的虚拟 DOM 树</strong>。</li>
+<li><strong>Diff 算法</strong>：调用 <code>patch(oldVnode, newVnode)</code> 进行新旧虚拟 DOM 的对比。Diff 算法采用<strong>同层比较</strong>，借助 <code>key</code> 快速定位复用节点，找出最小差异。</li>
+<li><strong>打补丁</strong>：将比对出的最小差异（Patch）应用到真实 DOM 上，完成视图更新。</li>
+</ul>
+<hr>
+<h3 id="第二部分：面试口述版（逐字稿参考）"><a href="#第二部分：面试口述版（逐字稿参考）" class="headerlink" title="第二部分：面试口述版（逐字稿参考）"></a>第二部分：面试口述版（逐字稿参考）</h3><p><em>(💡 提示：口述时语速要适中，关键名词如 AST、Render函数、Watcher、Diff算法 咬字要清晰，可以适当加上手势辅助说明。)</em></p>
+<p><strong>面试官，您好。关于 Vue 的编译和渲染完整流程，我个人的理解是可以将其划分为四个核心阶段，分别是：响应式初始化、模板编译、首次渲染，以及数据更新时的重渲染。</strong></p>
+<p><strong>第一步是响应式初始化。</strong><br>在 Vue 实例创建时，它会遍历 data 中的属性。如果是 Vue 2，会利用 <code>Object.defineProperty</code>；如果是 Vue 3，则利用 <code>Proxy</code> 进行数据劫持。这个阶段的核心是定义好 <code>getter</code> 和 <code>setter</code>，为后续的依赖收集和更新通知做好准备。</p>
+<p><strong>第二步是模板编译阶段。</strong><br>因为浏览器是不认识 Vue 的 <code>&lt;template&gt;</code> 语法的，所以需要将其编译成普通的 JavaScript 代码，也就是 <code>render</code> 函数。这个过程分为三小步：首先是 <strong>Parse</strong>，把模板字符串解析成 AST（抽象语法树）；接着是 <strong>Optimize</strong>，遍历 AST 标记出静态节点，这为以后 Diff 算法跳过静态内容打下了性能优化的基础；最后是 <strong>Generate</strong>，把 AST 转换成 <code>render</code> 函数。</p>
+<p><strong>第三步是首次渲染阶段。</strong><br>Vue 会执行刚才生成的 <code>render</code> 函数。在执行过程中，必然会读取到变量，这就触发了数据劫持时设置的 <code>getter</code>，此时 Vue 会把当前的<strong>渲染 Watcher</strong> 收集到数据的依赖容器（Dep）里。<code>render</code> 函数执行完毕后，会产出一棵<strong>虚拟 DOM 树（VNode）</strong>。最后，Vue 调用底层的 <code>patch</code> 方法，把这棵虚拟 DOM 树真实地挂载到浏览器的 DOM 上。</p>
+<p><strong>最后是数据驱动的更新阶段。</strong><br>当我们修改了某个响应式数据时，会触发它的 <code>setter</code>。此时，<code>setter</code> 会通知所有订阅了它的 Watcher。为了性能考虑，Vue 会把这些 Watcher 放到一个异步队列里进行批处理。等到下一个 Tick，Watcher 会触发组件重新执行 <code>render</code> 函数，生成一棵<strong>新的虚拟 DOM 树</strong>。<br>紧接着，Vue 会进入核心的 <strong>Diff 算法</strong>环节。它会采用同层比较的策略，结合我们在列表渲染时写的 <code>key</code> 属性，高效地对比出新旧虚拟 DOM 的差异。找出差异后，再精确地把这些“补丁（Patch）”打到真实的 DOM 上，从而完成最终的视图更新。</p>
+<p><strong>总结来说，这个流程就是从“模板”到“渲染函数”，再结合“响应式系统”，最终通过“虚拟DOM和Diff算法”实现高效的视图渲染和更新。</strong></p>
+<hr>
+<p>这份口述稿的逻辑连贯性很强，能够展现你对 Vue 底层原理的全局观。</p>
+<p>你觉得这个口述版的长度和深度合适吗？是否需要我针对其中的某个特定环节（比如 Diff 算法的具体比对策略，或者 Vue 2 &#x2F; Vue 3 在编译优化上的具体差异）再为你准备一份深入追问的回答话术？</p>
+<hr>
+<p>没问题，这就为你追加面试中高频的<strong>追问环节口述话术</strong>。</p>
+<p>在面试中，当你顺畅地背出完整的编译渲染流程后，面试官通常会挑其中最核心、最复杂的点进行深度挖掘。最常见的两个追问方向是：<strong>Diff 算法的具体比对策略</strong>，以及 <strong>Vue 3 相比 Vue 2 在编译阶段做了哪些神仙优化</strong>。</p>
+<p>以下是为你准备的逐字稿话术：</p>
+<hr>
+<h3 id="追加场景一：面试官追问“你能详细说说-Vue-的-Diff-算法是怎么工作的吗？”"><a href="#追加场景一：面试官追问“你能详细说说-Vue-的-Diff-算法是怎么工作的吗？”" class="headerlink" title="追加场景一：面试官追问“你能详细说说 Vue 的 Diff 算法是怎么工作的吗？”"></a>追加场景一：面试官追问“你能详细说说 Vue 的 Diff 算法是怎么工作的吗？”</h3><p><em>(💡 提示：这部分是重头戏，重点突出“同层比较”和“双端指针&#x2F;最长递增子序列”的概念。)</em></p>
+<p><strong>口述逐字稿：</strong></p>
+<p>“好的。关于 Vue 的 Diff 算法，我认为它的核心思想是**‘同层比较，深度优先’**，这样可以把传统树比对 $O(n^3)$ 的复杂度降到 $O(n)$。</p>
+<p>具体来说，当数据变化触发重新渲染，生成新的 VNode 树后，Vue 会执行 <code>patch</code> 函数进行新旧 VNode 的比对。比对过程遵循几个原则：</p>
+<ol>
+<li><strong>不跨层级比对</strong>：如果新旧节点的层级不同，Vue 会直接销毁旧节点，挂载新节点。</li>
+<li><strong>节点类型和 key 相同才被认为是相同节点</strong>：如果节点标签或者 key 变了，也会直接替换，不往下深入。</li>
+</ol>
+<p>当确认是相同节点后，真正的难点在于<strong>对比它们的子节点（Children）</strong>。<br>如果是纯文本或者只有一个子节点，直接替换就行。但如果新旧节点都有多个子节点（也就是数组对比），这里 Vue 2 和 Vue 3 的处理方式有所不同：</p>
+<ul>
+<li><strong>在 Vue 2 中</strong>，采用的是<strong>双端比较算法</strong>。它会设立四个指针，分别指向新旧子节点数组的头和尾。然后按照‘头头、尾尾、头尾、尾头’的顺序进行查找和复用。如果这四种都没匹配上，才会拿新节点的 key 去旧节点的 map 里找。这种方式能很好地处理大部分日常的 DOM 移动场景。</li>
+<li><strong>在 Vue 3 中</strong>，算法升级为了<strong>快速 Diff 算法</strong>。它首先会处理前置和后置的相同元素（掐头去尾），缩小比对范围。对于中间剩下的、顺序被打乱的节点，Vue 3 引入了**最长递增子序列（Longest Increasing Subsequence）**算法。它会计算出一个不需要移动的节点序列，然后只对不在这个序列里的节点进行移动或插入。这样做最大程度减少了 DOM 的移动操作，性能更好。”</li>
+</ul>
+<hr>
+<h3 id="追加场景二：面试官追问“你刚才提到模板编译，那-Vue-3-在编译和渲染上，比-Vue-2-做了哪些性能优化？”"><a href="#追加场景二：面试官追问“你刚才提到模板编译，那-Vue-3-在编译和渲染上，比-Vue-2-做了哪些性能优化？”" class="headerlink" title="追加场景二：面试官追问“你刚才提到模板编译，那 Vue 3 在编译和渲染上，比 Vue 2 做了哪些性能优化？”"></a>追加场景二：面试官追问“你刚才提到模板编译，那 Vue 3 在编译和渲染上，比 Vue 2 做了哪些性能优化？”</h3><p><em>(💡 提示：重点突出 Vue 3 的“靶向更新”和“静态提升”，体现你对前沿技术的关注。)</em></p>
+<p><strong>口述逐字稿：</strong></p>
+<p>“Vue 3 在编译阶段的优化是非常惊艳的，彻底改变了 Vue 2 中‘局部更新依然要遍历完整虚拟 DOM 树’的性能瓶颈。主要体现在以下四个方面：</p>
+<p><strong>第一是引入了 PatchFlags（补丁标记）和 Block Tree（区块树）。</strong><br>在 Vue 2 里，Diff 是全量遍历的。但在 Vue 3 的编译阶段（Optimize 过程），编译器如果发现一个节点是动态的，就会给它打上一个 <code>PatchFlag</code>（比如标记它是动态文本、动态 Class 还是动态 Style）。<br>同时，Vue 3 会在结构指令（如 <code>v-if</code>、<code>v-for</code>）的地方创建一个 Block 节点。这个 Block 节点会把内部所有的动态子节点收集到一个一维数组 <code>dynamicChildren</code> 里。这样，在后续更新时，Vue <strong>只需要遍历这个一维数组，进行靶向更新</strong>，完全跳过了那些永远不会变的静态节点，把 Diff 的复杂度从‘树的层级’降到了‘动态节点的数量’。</p>
+<p><strong>第二是静态提升（Static Hoisting）。</strong><br>在 Vue 2 中，即使是纯静态的节点，每次重新执行 <code>render</code> 函数时，都会重新创建一次 VNode 对象。而 Vue 3 会把这些静态节点和静态属性的创建逻辑，<strong>提升到 <code>render</code> 函数的外部</strong>。这样它们只会在初始化时被创建一次，后续每次渲染直接复用之前的引用，极大地减少了内存开销和垃圾回收（GC）的压力。</p>
+<p><strong>第三是事件监听缓存（Cache Handlers）。</strong><br>像 <code>@click=&quot;onClick&quot;</code> 这种绑定的事件，在 Vue 2 中每次渲染都会被视为一个新的函数去更新。Vue 3 在编译时会自动生成一个内联函数，并把它缓存起来。后续更新时直接使用缓存的函数，避免了不必要的组件重新渲染。</p>
+<p><strong>总结来说，Vue 3 把编译时的分析能力发挥到了极致，给运行时的 Diff 算法提供了极大的作弊提示，实现了‘按需更新’。</strong>”</p>
+<hr>
+<h2 id="有了这两段追加话术，你的-Vue-渲染流程度面试准备就非常立体了。既有宏观的骨架（上一条回复），又有微观的肌肉（这两段追问）。你可以多对着镜子或者录音练习几遍，找找自然交流的语感。需要我帮你再梳理一下其他前端面试高频题吗？"><a href="#有了这两段追加话术，你的-Vue-渲染流程度面试准备就非常立体了。既有宏观的骨架（上一条回复），又有微观的肌肉（这两段追问）。你可以多对着镜子或者录音练习几遍，找找自然交流的语感。需要我帮你再梳理一下其他前端面试高频题吗？" class="headerlink" title="有了这两段追加话术，你的 Vue 渲染流程度面试准备就非常立体了。既有宏观的骨架（上一条回复），又有微观的肌肉（这两段追问）。你可以多对着镜子或者录音练习几遍，找找自然交流的语感。需要我帮你再梳理一下其他前端面试高频题吗？"></a>有了这两段追加话术，你的 Vue 渲染流程度面试准备就非常立体了。既有宏观的骨架（上一条回复），又有微观的肌肉（这两段追问）。你可以多对着镜子或者录音练习几遍，找找自然交流的语感。需要我帮你再梳理一下其他前端面试高频题吗？</h2><p>太棒了，这种**“化整为零”**的拆解策略正是应对大厂高级前端面试的终极武器！</p>
+<p>如果面试官不让你背全流程，而是从全流程的某一个节点切入，进行单点深挖，通常会抛出以下 <strong>4 个极其经典的切片问题</strong>。</p>
+<p>我依然按照**“题目 -&gt; 核心笔记 -&gt; 面试口述版”**的结构为你整理，帮你彻底把 Vue 的渲染流程吃透。</p>
+<hr>
+<h3 id="切片一：针对“响应式初始化”的深挖"><a href="#切片一：针对“响应式初始化”的深挖" class="headerlink" title="切片一：针对“响应式初始化”的深挖"></a>切片一：针对“响应式初始化”的深挖</h3><p><strong>🔥 面试题：“你刚才提到了依赖收集，能具体说说内部的 <code>Dep</code> 和 <code>Watcher</code> 是什么关系？它们是怎么配合工作的？”</strong></p>
+<p><strong>【核心笔记】</strong></p>
+<ul>
+<li><p><strong>角色定位</strong>：</p>
+</li>
+<li><p><strong>Dep (Dependency)</strong>：依赖收集器，可以理解为“调度中心”。<strong>每个响应式属性</strong>都有一个专属的 Dep。</p>
+</li>
+<li><p><strong>Watcher</strong>：订阅者&#x2F;观察者。分为三种：渲染 Watcher（组件级别）、计算属性 Watcher（computed）、用户 Watcher（watch）。</p>
+</li>
+<li><p><strong>对应关系</strong>：多对多（$N:N$）。一个组件（一个渲染 Watcher）模板里可能用到多个变量（多个 Dep）；一个变量（一个 Dep）也可能在多个组件里被使用（多个渲染 Watcher）。</p>
+</li>
+<li><p><strong>配合过程</strong>：</p>
+</li>
+<li><p>读取数据（<code>getter</code>）：触发 <code>dep.depend()</code>，将当前的 Watcher 存入 Dep 的数组中。</p>
+</li>
+<li><p>修改数据（<code>setter</code>）：触发 <code>dep.notify()</code>，遍历数组，通知所有 Watcher 去执行更新。</p>
+</li>
+</ul>
+<p><strong>【面试口述版（逐字稿）】</strong><br>“好的。<code>Dep</code> 和 <code>Watcher</code> 本质上是经典<strong>观察者模式</strong>的具体实现。<br>我们可以这样理解：<code>Dep</code> 是每个响应式数据的‘调度中心’，而 <code>Watcher</code> 是‘订阅者’。在 Vue 中，每个组件实例都会对应一个<strong>渲染 Watcher</strong>。<br>当组件执行 <code>render</code> 函数渲染页面时，肯定会读取到绑定的变量。这一读，就触发了数据劫持里的 <code>getter</code>。此时，这个变量专属的 <code>Dep</code> 就会把当前的渲染 <code>Watcher</code> 收集到自己的名单里，这叫<strong>依赖收集</strong>。<br>将来有一天，我们用代码给这个变量赋了新值，触发了 <code>setter</code>，这个 <code>setter</code> 就会立刻让 <code>Dep</code> 去点名，调用 <code>notify</code> 方法，告诉名单里所有的 <code>Watcher</code>：‘数据变了，你们该去重新渲染页面了’。这就是它们协同工作的整个闭环。”</p>
+<hr>
+<h3 id="切片二：针对“模板编译”的深挖"><a href="#切片二：针对“模板编译”的深挖" class="headerlink" title="切片二：针对“模板编译”的深挖"></a>切片二：针对“模板编译”的深挖</h3><p><strong>🔥 面试题：“能不能详细讲讲 Vue 模板编译（Compiler）的那三个阶段具体做了什么事？为什么要标记静态节点？”</strong></p>
+<p><strong>【核心笔记】</strong></p>
+<ul>
+<li><strong>Parse（解析）</strong>：用正则表达式，把 <code>&lt;template&gt;</code> 里的字符串 HTML 转化为 AST（抽象语法树，就是一个描述节点结构的 JS 对象）。</li>
+<li><strong>Optimize（优化）</strong>：深度遍历 AST，找出<strong>静态节点</strong>（纯文本）和<strong>静态根节点</strong>（包含子节点且全为静态），并打上标记（<code>static: true</code>）。</li>
+<li><strong>Generate（生成）</strong>：将优化后的 AST 转化为可执行的代码字符串（如 <code>_c(&#39;div&#39;, ...)</code>），最终通过 <code>new Function</code> 生成 <code>render</code> 函数。</li>
+<li><strong>标记目的</strong>：为 Diff 算法提供“作弊码”，跳过永不变化的节点，极大提升更新阶段的性能。</li>
+</ul>
+<p><strong>【面试口述版（逐字稿）】</strong><br>“Vue 的模板编译主要分为三大步：Parse、Optimize 和 Generate。<br>第一步是 <strong>Parse 解析</strong>。因为浏览器不认识 Vue 的指令和插值语法，Vue 会用大量的正则表达式把模板字符串解析成一棵 <strong>AST（抽象语法树）</strong>，用 JS 对象来描述 DOM 结构。<br>第二步是 <strong>Optimize 优化</strong>。这也是编译阶段最重要的一步。Vue 会遍历这棵 AST 树，找出那些<strong>纯静态的节点</strong>，比如一段永远不会变的纯文本 <code>&lt;span&gt;hello&lt;/span&gt;</code>，给它们打上静态标记。这样做的核心目的，是为了在后续数据更新、执行 Diff 算法时，直接<strong>跳过</strong>这些节点的比对，从而节省性能开销。<br>最后一步是 <strong>Generate 生成</strong>。Vue 会把打好标记的 AST 树，拼接成一段普通的 JavaScript 代码字符串，最后通过 <code>new Function</code> 将其转化为真正可以执行的 <strong><code>render</code> 函数</strong>。”</p>
+<hr>
+<h3 id="切片三：针对“首屏渲染与虚拟-DOM”的深挖"><a href="#切片三：针对“首屏渲染与虚拟-DOM”的深挖" class="headerlink" title="切片三：针对“首屏渲染与虚拟 DOM”的深挖"></a>切片三：针对“首屏渲染与虚拟 DOM”的深挖</h3><p><strong>🔥 面试题：“<code>render</code> 函数执行后会生成虚拟 DOM。为什么 Vue 要多此一举引入虚拟 DOM？直接操作真实 DOM 不好吗？”</strong></p>
+<p><strong>【核心笔记】</strong></p>
+<ul>
+<li><strong>虚拟 DOM 本质</strong>：一个用来描述真实 DOM 结构的轻量级 JavaScript 对象。</li>
+<li><strong>三大核心价值</strong>：</li>
+</ul>
+<ol>
+<li><strong>跨平台能力（最重要）</strong>：虚拟 DOM 抽象了底层渲染逻辑。同一份虚拟 DOM，在浏览器里可以渲染成 HTML（DOM），在移动端可以渲染成原生控件（Weex &#x2F; 贴片），在服务端可以渲染成字符串（SSR）。</li>
+<li><strong>批量更新防抖</strong>：真实 DOM 的操作极其昂贵（会引起重绘回流）。虚拟 DOM 可以在 JS 层面把多次数据修改计算合并成一次最优的 Patch，再统一去操作真实 DOM。</li>
+<li><strong>声明式开发的底座</strong>：让开发者只需要关注数据状态（写模板），不需要手动去写原生的 <code>createElement</code> 和 <code>appendChild</code>。</li>
+</ol>
+<p><strong>【面试口述版（逐字稿）】</strong><br>“我认为引入虚拟 DOM 绝对不是多此一举，它的价值主要体现在三个方面。<br>第一，也是最核心的一点，它赋予了 Vue <strong>跨平台的能力</strong>。真实 DOM 是强依赖浏览器的，但虚拟 DOM 只是一个普通的 JS 对象。有了这个抽象层，Vue 就不局限于浏览器了，它可以借助不同的渲染器，实现服务端渲染（SSR），或者像 Weex 那样渲染出移动端的原生组件。<br>第二，它提供了一种<strong>批量更新的缓冲机制</strong>。直接频繁操作真实 DOM 的代价太高了，很容易引发浏览器的重排重绘。有了虚拟 DOM，Vue 可以在 JS 内存中进行快速的比对和计算，把多次变动合并成一次，最后只把必要的‘补丁（Patch）’打到真实 DOM 上，保证了性能的下限。<br>第三，它极大地<strong>提升了开发体验</strong>。我们只需要声明式地去写模板、改数据，至于底层 DOM 该怎么增删改查，全交给了虚拟 DOM 和底层框架去处理。”</p>
+<hr>
+<h3 id="切片四：针对“数据更新”的深挖"><a href="#切片四：针对“数据更新”的深挖" class="headerlink" title="切片四：针对“数据更新”的深挖"></a>切片四：针对“数据更新”的深挖</h3><p><strong>🔥 面试题：“当数据修改后，Vue 是同步去更新真实 DOM 的吗？能不能顺便讲讲 <code>$nextTick</code> 的底层逻辑？”</strong></p>
+<p><strong>【核心笔记】</strong></p>
+<ul>
+<li><strong>同步还是异步</strong>：绝对是<strong>异步更新</strong>。</li>
+<li><strong>异步队列机制</strong>：同一事件循环（Tick）中发生的多次数据变动，对应的 Watcher 会被推入一个队列并<strong>去重</strong>。</li>
+<li><strong><code>nextTick</code> 原理</strong>：利用浏览器的事件循环（Event Loop）机制。Vue 会优先降级使用微任务（Microtask），以确保在浏览器渲染前执行。</li>
+<li><strong>降级策略（兼容性处理）</strong>：<code>Promise.then</code> (首选，微任务) -&gt; <code>MutationObserver</code> (微任务) -&gt; <code>setImmediate</code> (宏任务，IE专用) -&gt; <code>setTimeout(fn, 0)</code> (宏任务兜底)。</li>
+</ul>
+<p><strong>【面试口述版（逐字稿）】</strong><br>“Vue 的 DOM 更新绝对是<strong>异步的</strong>。<br>当我们修改数据触发 <code>setter</code> 后，Vue 并没有立刻去操作 DOM。而是把收到通知的 Watcher 推入到一个<strong>异步队列</strong>中。如果同一个变量被连续修改了 100 次，Vue 内部会自动对这个 Watcher 进行去重，确保它在队列里只存在一次。等到当前的同步代码全部执行完，Vue 才会去清空这个队列，执行一次真正的 DOM 重新渲染。<br>而为了让我们开发者能在 DOM 更新完毕后拿到最新的节点，Vue 提供了 <strong><code>$nextTick</code></strong> API。它的底层逻辑是利用了浏览器的<strong>事件循环机制（Event Loop）</strong>。<br>Vue 内部封装了一个异步降级策略来执行传入 <code>$nextTick</code> 的回调函数。它会优先尝试使用<strong>微任务</strong>，也就是 <code>Promise.then</code>，如果浏览器不支持，再去尝试 <code>MutationObserver</code>；如果还是不行，最后才会兜底使用<strong>宏任务</strong>的 <code>setTimeout</code>。这就保证了我们写在 <code>$nextTick</code> 里的回调，一定能在 Vue 完成异步 DOM 更新之后精准执行。”</p>
+<hr>
+<p>这样拆解下来，无论面试官是从全流程大视野让你侃侃而谈，还是从“AST”、“虚拟DOM”、“nextTick”这些刁钻角度切入，这套“核心笔记 + 话术”都能帮你游刃有余地接住。</p>
+<hr>
+<p>没问题，这三道题是 Vue 面试中最硬核、也最能拉开候选人差距的“三座大山”。</p>
+<p>我为你量身定制了这三道题的**“核心笔记 + 满分口述逐字稿”**，去掉了冗余信息，直击面试官的考察痛点。</p>
+<hr>
+<h3 id="第一题：说下虚拟-DOM-Diff-算法"><a href="#第一题：说下虚拟-DOM-Diff-算法" class="headerlink" title="第一题：说下虚拟 DOM &amp; Diff 算法"></a>第一题：说下虚拟 DOM &amp; Diff 算法</h3><p><strong>【核心笔记】</strong></p>
+<ul>
+<li><p><strong>虚拟 DOM (VDOM)</strong>：</p>
+</li>
+<li><p><strong>本质</strong>：用 JavaScript 对象（VNode）来描述真实 DOM 树。</p>
+</li>
+<li><p><strong>价值</strong>：提供跨平台能力（SSR、Weex）；作为批量更新的缓冲层，减少高昂的真实 DOM 操作。</p>
+</li>
+<li><p><strong>Diff 算法核心策略</strong>：</p>
+</li>
+<li><p><strong>深度优先，同层比较</strong>：时间复杂度从 $O(n^3)$ 降为 $O(n)$。不跨层级移动节点。</p>
+</li>
+<li><p><strong>节点复用</strong>：<code>tag</code> 和 <code>key</code> 相同即认为是相同节点。</p>
+</li>
+<li><p><strong>Vue 2 vs Vue 3 Diff 差异</strong>：</p>
+</li>
+<li><p><strong>Vue 2 (双端对比)</strong>：新旧子节点数组设置头尾双指针，按“头头、尾尾、头尾、尾头”顺序对比，最后查找 map。</p>
+</li>
+<li><p><strong>Vue 3 (快速 Diff)</strong>：先处理“掐头去尾”的相同节点；针对中间乱序部分，采用<strong>最长递增子序列 (Longest Increasing Subsequence)</strong> 算法，计算出最少移动次数。</p>
+</li>
+</ul>
+<p><strong>【面试口述版（逐字稿）】</strong></p>
+<p>“关于虚拟 DOM，它本质上就是一个描述真实 DOM 结构的普通 JS 对象。它的核心价值有两个：一是实现了跨平台，让同一份逻辑可以渲染到浏览器或移动端；二是作为性能的缓冲层，把多次频繁的 DOM 修改在 JS 层面合并，最后再统一打补丁。</p>
+<p>当数据更新生成新的虚拟 DOM 后，就会进入 Diff 算法阶段。Vue 的 Diff 核心原则是**‘同层比较’**，配合元素的 <code>key</code> 属性来最大化复用节点。</p>
+<p>说到具体的比对策略，Vue 2 和 Vue 3 有很大的性能跨度：<br>在 Vue 2 中，处理子节点列表采用的是<strong>双端比较</strong>，通过头尾四个指针向中间靠拢比对，这能解决大部分日常的节点移动场景。<br>而 Vue 3 升级成了<strong>快速 Diff 算法</strong>。它会先进行前置和后置节点的比对（也就是掐头去尾）。对于中间复杂的乱序节点，Vue 3 引入了<strong>最长递增子序列</strong>的算法，它能精准算出一个不需要移动的节点序列，只对序列外的节点做真实 DOM 的插入或移动。这把复杂列表更新的性能推到了极致。”</p>
+<hr>
+<h3 id="第二题：说下-Vue-2-Vue-3-响应式原理"><a href="#第二题：说下-Vue-2-Vue-3-响应式原理" class="headerlink" title="第二题：说下 Vue 2 &amp; Vue 3 响应式原理"></a>第二题：说下 Vue 2 &amp; Vue 3 响应式原理</h3><p><strong>【核心笔记】</strong></p>
+<ul>
+<li><p><strong>核心机制</strong>：数据劫持 + 发布订阅模式 (Dep &amp; Watcher)。</p>
+</li>
+<li><p><strong>Vue 2 (<code>Object.defineProperty</code>)</strong>：</p>
+</li>
+<li><p><strong>原理</strong>：遍历对象属性，重写 <code>getter</code>（收集依赖）和 <code>setter</code>（派发更新）。</p>
+</li>
+<li><p><strong>痛点</strong>：只能拦截对象已有属性的读取&#x2F;修改。<strong>无法监听到对象属性的新增和删除</strong>（需用 <code>$set</code>&#x2F;<code>$delete</code>）；<strong>无法劫持数组的索引和长度变化</strong>（需重写数组 7 个变异方法）。</p>
+</li>
+<li><p><strong>Vue 3 (<code>Proxy</code> + <code>Reflect</code>)</strong>：</p>
+</li>
+<li><p><strong>原理</strong>：使用 ES6 <code>Proxy</code> 代理整个目标对象，配合 <code>Reflect</code> 保证上下文 <code>this</code> 的正确指向。</p>
+</li>
+<li><p><strong>优势</strong>：直接拦截对整个对象的任何操作（包括新增、删除、数组操作）；支持<strong>惰性响应式</strong>（只在访问深层属性时才代理，提升初始化性能）。</p>
+</li>
+</ul>
+<p><strong>【面试口述版（逐字稿）】</strong></p>
+<p>“Vue 的响应式原理核心就是‘数据劫持’加上‘发布订阅模式’，也就是通过拦截数据的读写，来实现依赖收集和派发更新。</p>
+<p>Vue 2 是基于 <code>Object.defineProperty</code> 实现的。它在初始化时会深度遍历 <code>data</code>，把属性转为 getter 和 setter。但这个 API 有个致命缺陷：它只能劫持对象原本就有的属性。如果我们动态新增或删除属性，它是拦截不到的，所以 Vue 2 才被迫提供了 <code>$set</code> 这个 API。另外它对数组的索引修改也无能为力，必须去 hack 数组的原型方法。</p>
+<p>为了彻底解决这些痛点，Vue 3 拥抱了 ES6 的 <code>Proxy</code>。<br><code>Proxy</code> 的降维打击在于，它代理的是<strong>整个对象</strong>而不是单个属性。不管你是新增属性、删除属性，还是直接操作数组，<code>Proxy</code> 都能完美拦截。同时，结合 <code>Reflect</code> 也能保证内部 <code>this</code> 指向的正确。<br>而且，Vue 3 的 <code>Proxy</code> 是<strong>惰性</strong>的。Vue 2 是一上来就递归整个对象做劫持，很耗时；而 Vue 3 只有当你在页面用到深层嵌套的属性时，才会去代理它，这极大地提升了大型项目的首屏初始化性能。”</p>
+<hr>
+<h3 id="第三题：说下模板编译过程"><a href="#第三题：说下模板编译过程" class="headerlink" title="第三题：说下模板编译过程"></a>第三题：说下模板编译过程</h3><p><strong>【核心笔记】</strong></p>
+<ul>
+<li><strong>目标</strong>：将 <code>&lt;template&gt;</code> 字符串转换为可执行的 JavaScript <code>render</code> 函数。</li>
+<li><strong>三大步骤</strong>：</li>
+</ul>
+<ol>
+<li><strong>Parse (解析)</strong>：用正则表达式遍历模板字符串，生成 <strong>AST（抽象语法树）</strong>。</li>
+<li><strong>Optimize (优化)</strong>：最关键的一步。深度遍历 AST，给<strong>静态节点</strong>和<strong>静态根节点</strong>打上标记。</li>
+</ol>
+<ul>
+<li><em>目的</em>：Diff 算法比对时直接跳过静态节点。</li>
+<li><em>Vue 3 进阶</em>：引入 PatchFlags（动态标记）和 Block Tree（靶向更新）。</li>
+</ul>
+<ol start="3">
+<li><strong>Generate (生成)</strong>：将优化后的 AST 转化为类似 <code>_c(&#39;div&#39;, ...)</code> 的代码字符串，最终生成 <code>render</code> 函数。</li>
+</ol>
+<p><strong>【面试口述版（逐字稿）】</strong></p>
+<p>“因为浏览器是看不懂 Vue 写的 <code>&lt;template&gt;</code> 语法的，所以 Vue 必须要把模板编译成浏览器认识的 JS 代码，也就是 <code>render</code> 函数。整个编译过程分为三步：</p>
+<p>第一步是 <strong>Parse（解析）</strong>。Vue 会使用一套复杂的正则表达式，把 HTML 字符串一层层解析成一棵 AST，也就是抽象语法树，用 JS 对象把节点层级和属性描述出来。</p>
+<p>第二步是 <strong>Optimize（优化）</strong>，这也是最关乎性能的一步。Vue 会遍历这棵 AST，去寻找那些永远不会变的纯文本节点，并给它们打上<strong>静态标记</strong>。打完标记后，未来数据变化触发 Diff 算法时，Vue 就会直接跳过这些静态节点，省去了大量无用的比对时间。<br><em>(如果想加分，可以补充：)</em> 在 Vue 3 中，这个优化做到了极致，引入了 PatchFlags 和 BlockTree，实现了只比对动态节点的靶向更新。</p>
+<p>第三步是 <strong>Generate（生成）</strong>。Vue 会把这棵打好标记的 AST 树，拼接成一段普通的 JavaScript 代码字符串，最后通过 <code>new Function</code> 的方式，将其转化为真正在组件挂载时执行的 <code>render</code> 函数。”</p>
+<hr>
+<p>这三段逐字稿已经经过了“降维”和“提纯”，非常适合在面试的高压环境下流畅背出。</p>
+<hr>
+<p>除了刚才那“三座大山”（响应式、虚拟 DOM&#x2F;Diff、模板编译），Vue 面试题库中还有几个出场率极高、且非常考验基本功的**“必考点”**。</p>
+<p>为你整理了另外三个极其经典的高频考点，依然采用**“核心笔记 + 面试口述版”**的结构：</p>
+<hr>
+<h3 id="第四个必考点：computed-和-watch-的区别与使用场景？"><a href="#第四个必考点：computed-和-watch-的区别与使用场景？" class="headerlink" title="第四个必考点：computed 和 watch 的区别与使用场景？"></a>第四个必考点：<code>computed</code> 和 <code>watch</code> 的区别与使用场景？</h3><p>这道题几乎是 Vue 基础的“敲门砖”，面试官主要想看你是否真正理解了它们的底层设计意图。</p>
+<p><strong>【核心笔记】</strong></p>
+<ul>
+<li><p><strong><code>computed</code> (计算属性)</strong>：</p>
+</li>
+<li><p><strong>核心特性：有缓存</strong>。只有当它依赖的响应式数据发生变化时，才会重新计算。如果依赖没变，多次访问会直接返回缓存结果。</p>
+</li>
+<li><p><strong>限制</strong>：内部<strong>不能</strong>执行异步操作（如发 AJAX 请求），必须同步返回一个计算结果。</p>
+</li>
+<li><p><strong>场景</strong>：适合多个数据计算得出一个结果（多对一），比如购物车总价计算、过滤列表。</p>
+</li>
+<li><p><strong><code>watch</code> (侦听器)</strong>：</p>
+</li>
+<li><p><strong>核心特性：无缓存</strong>。专门用来监听某一个特定的响应式数据，一旦变化就执行回调。</p>
+</li>
+<li><p><strong>优势</strong>：内部<strong>可以</strong>执行异步操作或开销较大的操作。</p>
+</li>
+<li><p><strong>场景</strong>：适合一个数据影响多个数据，或者数据变化时需要执行副作用（一对多），比如搜索框输入防抖后发请求、监听路由变化。</p>
+</li>
+</ul>
+<p><strong>【面试口述版（逐字稿）】</strong></p>
+<p>“关于 <code>computed</code> 和 <code>watch</code>，它们虽然都能响应数据的变化，但设计初衷完全不同。</p>
+<p>最核心的区别在于<strong>缓存机制</strong>。<code>computed</code> 是有缓存的，它主要用于通过计算派生出新的状态。只要它依赖的底层数据不更新，不管我在模板里读取它多少次，它都会直接返回之前的缓存结果，性能非常好。但在 <code>computed</code> 里面是绝对不能写异步逻辑的，必须 return 一个同步结果。</p>
+<p>而 <code>watch</code> 呢，它没有缓存，它的定位是一个‘侦听器’。当我需要在一个状态发生变化时，去执行一些<strong>副作用</strong>——比如发网络请求、操作 DOM，或者执行一些比较耗时的异步任务时，我就会用 <code>watch</code>。</p>
+<p>总结来说，如果是‘多对一’的纯数据计算，我会优先用 <code>computed</code>；如果是‘一对多’的副作用触发，或者需要异步操作，我就用 <code>watch</code>。”</p>
+<hr>
+<h3 id="第五个必考点：Vue-Router-的底层原理（Hash-和-History-模式的区别）"><a href="#第五个必考点：Vue-Router-的底层原理（Hash-和-History-模式的区别）" class="headerlink" title="第五个必考点：Vue Router 的底层原理（Hash 和 History 模式的区别）"></a>第五个必考点：Vue Router 的底层原理（Hash 和 History 模式的区别）</h3><p>因为我们做的是单页面应用（SPA），面试官一定会考你前端路由是怎么做到“页面局部刷新但 URL 跟着变”的。</p>
+<p><strong>【核心笔记】</strong></p>
+<ul>
+<li><p><strong>核心本质</strong>：监听 URL 的变化，拦截浏览器的默认跳转行为，然后由前端 JS 动态渲染对应的组件。</p>
+</li>
+<li><p><strong>Hash 模式</strong>：</p>
+</li>
+<li><p><strong>外观</strong>：URL 带有 <code>#</code> 符号（如 <code>example.com/#/home</code>）。</p>
+</li>
+<li><p><strong>原理</strong>：基于 <code>window.onhashchange</code> 事件监听 <code>#</code> 后面内容的变化。</p>
+</li>
+<li><p><strong>特点</strong>：兼容性极好，不需要后端服务器做任何配置，因为 <code>#</code> 后面的内容不会发送给服务器。</p>
+</li>
+<li><p><strong>History 模式</strong>：</p>
+</li>
+<li><p><strong>外观</strong>：正常的 URL（如 <code>example.com/home</code>），更美观。</p>
+</li>
+<li><p><strong>原理</strong>：基于 HTML5 的 History API，即 <code>pushState()</code> 和 <code>replaceState()</code> 来改变 URL，同时监听 <code>popstate</code> 事件处理浏览器的前进后退。</p>
+</li>
+<li><p><strong>痛点（必答）</strong>：<strong>刷新页面会报 404</strong>。因为浏览器会把这个漂亮的 URL 当作真实的静态资源去向服务器请求。必须在服务端（如 Nginx）配置一个 fallback（通配符拦截），如果找不到文件，统一重定向回 <code>index.html</code>。</p>
+</li>
+</ul>
+<p><strong>【面试口述版（逐字稿）】</strong></p>
+<p>“Vue Router 之所以能实现单页面应用，底层其实就是拦截了浏览器的默认跳转，由前端自己接管了 URL 变化和组件渲染。它主要有两种模式：Hash 和 History。</p>
+<p><strong>Hash 模式</strong>最明显的特征是 URL 里有个井号 <code>#</code>。它的底层原理是监听浏览器的 <code>hashchange</code> 事件。它的好处是简单、兼容性好，而且因为井号后面的路径浏览器压根不会发给服务器，所以完全不需要后端配合。但缺点就是 URL 不太美观。</p>
+<p><strong>History 模式</strong>的 URL 就和普通的网站一模一样，非常干净。它是利用了 HTML5 新增的 <code>pushState</code> 和 <code>replaceState</code> API 来无刷新地改变地址栏，并通过监听 <code>popstate</code> 事件来处理历史记录跳转。<br>但它有一个致命问题：如果用户在这个页面直接按 F5 刷新，浏览器会真的拿着这个路径去请求服务器。由于这只是前端虚拟的路由，服务器找不到这个文件，就会直接报 404 错误。所以，用 History 模式<strong>必须</strong>要后端或者运维配合，在 Nginx 上配一个 fallback 规则，把所有未知的请求都重定向回 <code>index.html</code>，交还给前端路由去解析。”</p>
+<hr>
+<h3 id="第六个必考点：keep-alive-的理解与底层原理"><a href="#第六个必考点：keep-alive-的理解与底层原理" class="headerlink" title="第六个必考点：keep-alive 的理解与底层原理"></a>第六个必考点：<code>keep-alive</code> 的理解与底层原理</h3><p>这也是进阶必问，涉及到组件缓存和 Vue 的内置优化组件。</p>
+<p><strong>【核心笔记】</strong></p>
+<ul>
+<li><strong>作用</strong>：Vue 的内置抽象组件（不会渲染出真实 DOM），用于缓存包裹在其中的动态组件实例。避免组件频繁创建和销毁，保留组件状态。</li>
+<li><strong>专属生命周期</strong>：被缓存的组件会多出两个生命周期钩子：<code>activated</code>（从缓存激活时触发）和 <code>deactivated</code>（失活进入缓存时触发）。</li>
+<li><strong>核心属性</strong>：<code>include</code> (白名单)、<code>exclude</code> (黑名单)、<code>max</code> (最大缓存数)。</li>
+<li><strong>底层算法（高分点）</strong>：当配置了 <code>max</code> 属性，且缓存数量超标时，底层会采用 <strong>LRU (Least Recently Used，最近最少使用)</strong> 缓存淘汰算法。</li>
+</ul>
+<p><strong>【面试口述版（逐字稿）】</strong></p>
+<p>“<code>keep-alive</code> 是 Vue 提供的一个非常有用的内置组件，主要用来<strong>缓存组件实例</strong>。</p>
+<p>在实际开发中，比如从一个‘商品列表页’点击进入‘商品详情页’，再按返回键退回列表页时，我们通常希望列表不仅保持在之前的滚动位置，而且不要再去重新发 AJAX 请求渲染一遍。这时候用 <code>keep-alive</code> 把包裹起来，它就能把组件的状态暂存到内存里，而不是销毁。</p>
+<p>一旦组件被 <code>keep-alive</code> 缓存了，它的 <code>created</code> 和 <code>mounted</code> 钩子只会执行一次。取而代之的是，每次进入组件会触发 <strong><code>activated</code></strong>，离开会触发 <strong><code>deactivated</code></strong>。我会在这两个特定钩子里做一些轻量级的数据刷新或重置。</p>
+<p><em>(如果想秀一下源码深度，补充这段：)</em><br>另外，如果涉及到多个标签页的缓存，我们通常会配置 <code>max</code> 属性来限制最大缓存数，防止内存溢出。Vue 底层在这里其实实现了一个 <strong>LRU 缓存淘汰算法</strong>：它会时刻记录每个组件的最新访问时间，当缓存满了的时候，优先把那个最久没有被用户访问过的组件从内存中踢掉。”</p>
+<hr>
+<p>这三个点加上之前的三个点，基本覆盖了 Vue 面试中 90% 的核心高频八股文。</p>
+<hr>
+<p>Vue 的面试题库虽然庞大，但核心高频题是有明显边界的。前面我们已经拿下了最难的“三座大山”和进阶组件原理。</p>
+<p>为了让你的 Vue 面试准备真正做到“无死角”，我再为你补充 <strong>3 道出场率极高、且非常考验底层逻辑的基础题</strong>。这三道题看似简单，但很多候选人只能答出表面，如果能结合底层原理（如 AST、Diff 算法、内存指针）来回答，绝对是加分项。</p>
+<hr>
+<h3 id="第七个必考点：v-if-和-v-show-的区别？底层是怎么实现的？"><a href="#第七个必考点：v-if-和-v-show-的区别？底层是怎么实现的？" class="headerlink" title="第七个必考点：v-if 和 v-show 的区别？底层是怎么实现的？"></a>第七个必考点：<code>v-if</code> 和 <code>v-show</code> 的区别？底层是怎么实现的？</h3><p>这道题太经典了，面试官不仅想听“一个是删除 DOM，一个是 display: none”，更想听你从<strong>编译阶段和生命周期</strong>的角度去剖析。</p>
+<p><strong>【核心笔记】</strong></p>
+<ul>
+<li><p><strong><code>v-if</code> (真正的条件渲染)</strong>：</p>
+</li>
+<li><p><strong>原理</strong>：在模板编译阶段（AST 转 Render 函数），<code>v-if</code> 会被编译成三元表达式。条件为假时，直接返回一个注释节点（不会生成真正的 VNode）。</p>
+</li>
+<li><p><strong>开销</strong>：切换时会触发组件的销毁（<code>unmounted</code>）和重建（<code>mounted</code>），切换开销大。</p>
+</li>
+<li><p><strong><code>v-show</code> (CSS 切换)</strong>：</p>
+</li>
+<li><p><strong>原理</strong>：在编译阶段会被解析为一个指令（Directive）。不管初始条件真假，都会生成 VNode 并渲染成真实 DOM。条件为假时，底层只是给元素加上内联样式 <code>display: none</code>。</p>
+</li>
+<li><p><strong>开销</strong>：初始渲染开销大（即使为假也要渲染 DOM），但后续切换开销极小。</p>
+</li>
+<li><p><strong>场景选择</strong>：频繁切换用 <code>v-show</code>；运行条件很少改变、或者需要利用生命周期重置状态时用 <code>v-if</code>。</p>
+</li>
+</ul>
+<p><strong>【面试口述版（逐字稿）】</strong></p>
+<p>“关于 <code>v-if</code> 和 <code>v-show</code>，它们的表象区别大家都知道，一个是操作 DOM 的增删，一个是切换 CSS 的 <code>display</code> 属性。但如果从 Vue 的底层来看，它们在编译和运行时的行为是完全不同的。</p>
+<p><code>v-if</code> 是‘真正的条件渲染’。在 Vue 编译模板时，<code>v-if</code> 会被转化为一段三元表达式代码。如果条件为假，<code>render</code> 函数根本就不会生成对应的虚拟 DOM 节点，而是直接返回一个占位的注释节点。在切换 <code>v-if</code> 时，它内部包含的子组件会完整地走一遍创建和销毁的生命周期。</p>
+<p>而 <code>v-show</code> 本质上是一个 Vue 的内置指令。无论条件真假，它都会被正常编译生成虚拟 DOM 并挂载到页面上。当条件变化时，Vue 只是通过修改元素的内联样式 <code>display: none</code> 来控制显隐，并不会触发组件的生命周期。</p>
+<p>所以在实际项目中，如果是像页签切换这种非常频繁的操作，我一定会用 <code>v-show</code> 来减少 DOM 操作的性能损耗；但如果是权限按钮或者表单的某个特定大模块，不经常改变，我就会用 <code>v-if</code>，这样可以减少首屏的 DOM 树规模。”</p>
+<hr>
+<h3 id="第八个必考点：为什么组件的-data-必须是一个函数，而根实例可以是对象？"><a href="#第八个必考点：为什么组件的-data-必须是一个函数，而根实例可以是对象？" class="headerlink" title="第八个必考点：为什么组件的 data 必须是一个函数，而根实例可以是对象？"></a>第八个必考点：为什么组件的 <code>data</code> 必须是一个函数，而根实例可以是对象？</h3><p>这是一道非常考验 JavaScript 基本功（闭包与引用数据类型）的题目。</p>
+<p><strong>【核心笔记】</strong></p>
+<ul>
+<li><strong>核心原因</strong>：JavaScript 中的对象是<strong>引用类型</strong>（存放在堆内存中，变量只保存内存地址指针）。</li>
+<li><strong>组件复用</strong>：组件是可以被多次复用的（比如页面上有十个同样的自定义按钮组件）。</li>
+<li><strong>如果 <code>data</code> 是对象</strong>：这十个按钮组件会共享同一个内存地址里的 <code>data</code>。点击其中一个按钮改变了状态，另外九个按钮的状态也会跟着同步变异，导致数据污染。</li>
+<li><strong>如果 <code>data</code> 是函数</strong>：每次创建组件实例时，Vue 都会调用这个函数，利用闭包的特性，<code>return</code> 出一个<strong>全新且独立</strong>的数据对象。这样各个实例维护自己的作用域，互不干扰。</li>
+<li><strong>根实例（<code>new Vue()</code> 或 <code>createApp()</code>）</strong>：因为整个应用只有一个根实例，它是单例的，不存在复用的情况，所以直接写成对象也没关系。</li>
+</ul>
+<p><strong>【面试口述版（逐字稿）】</strong></p>
+<p>“组件的 <code>data</code> 必须是函数，这其实和 Vue 关系不大，纯粹是因为 JavaScript 的语言特性。</p>
+<p>在 JS 中，对象是引用数据类型。因为 Vue 的组件是被设计用来高度复用的，假如我们在页面上使用了同一个组件三次，如果 <code>data</code> 直接是一个纯对象，那么这三个组件实例实际上是指向了同一块内存地址。这就会导致极其可怕的 Bug：你在第一个组件里修改了某个变量，另外两个组件也会跟着变，造成了严重的数据污染。</p>
+<p>为了解决这个问题，Vue 强制要求组件的 <code>data</code> 必须是一个函数。每次实例化组件时，Vue 内部都会执行一次这个工厂函数，返回一个全新分配了内存地址的对象。这样，每个组件实例就拥有了属于自己独立的响应式数据，彼此之间互不干扰。至于根实例，因为整个 SPA 单页应用里永远只会实例化一次，是单例模式，所以直接写对象是完全安全的。”</p>
+<hr>
+<h3 id="第九个必考点：v-for-中为什么要用-key？为什么不推荐用-index（索引）作为-key？"><a href="#第九个必考点：v-for-中为什么要用-key？为什么不推荐用-index（索引）作为-key？" class="headerlink" title="第九个必考点：v-for 中为什么要用 key？为什么不推荐用 index（索引）作为 key？"></a>第九个必考点：<code>v-for</code> 中为什么要用 <code>key</code>？为什么不推荐用 <code>index</code>（索引）作为 <code>key</code>？</h3><p>这道题可以直接联动我们之前背过的“Diff 算法”，是一个绝佳的展示系统性思考的机会。</p>
+<p><strong>【核心笔记】</strong></p>
+<ul>
+<li><strong><code>key</code> 的本质</strong>：它是虚拟 DOM 节点（VNode）的唯一身份证。</li>
+<li><strong>为什么要用 <code>key</code>？</strong>：在执行 Diff 算法的“同层比较”时，Vue 会通过 <code>tag</code>（标签名）和 <code>key</code> 来判断两个节点是否是同一个节点。如果有 <code>key</code>，Vue 就能精准定位，最大程度地复用已有 DOM，避免无谓的销毁和重建。</li>
+<li><strong>为什么不能用 <code>index</code>？</strong>：</li>
+<li><strong>状态错乱 BUG</strong>：如果在列表头部或中间插入&#x2F;删除元素，后面的所有元素的 <code>index</code> 都会发生改变。如果列表内部有依赖自身状态的表单（比如输入框、复选框），会导致状态张冠李戴（因为 Vue 发现 key 一样，复用了 DOM，但实际上内容变了）。</li>
+<li><strong>性能劣化</strong>：原本只需要插入一个新节点的操作，因为后续所有节点的 <code>index</code> 变了，Vue 会认为它们全是新节点，从而导致大量本可避免的 DOM 更新操作。</li>
+</ul>
+<p><strong>【面试口述版（逐字稿）】</strong></p>
+<p>“关于 <code>v-for</code> 里的 <code>key</code>，其实就是在给底层的 Diff 算法提供‘作弊提示’。</p>
+<p>当数据更新触发重渲染时，Vue 会对新旧虚拟 DOM 进行比对。如果不写 <code>key</code> 或者用默认的机制，Vue 会采取‘就地更新’策略，它不知道哪个节点对应哪个，只能傻傻地挨个替换。但是有了唯一且稳定的 <code>key</code>，Vue 就能像查字典一样，精准地知道：‘哦，这个节点原来在位置 A，现在移到了位置 B’，从而直接复用原来的真实 DOM 节点，大幅提升渲染性能。</p>
+<p>至于为什么千万不能用数组的 <code>index</code> 作为 <code>key</code>，这在处理动态列表时会引发灾难性的问题。<br>假设我有 [A, B, C] 三条数据，此时它们的 <code>index</code> 分别是 0, 1, 2。如果我在 A 之前插入了一条新数据 X，那么原本 A 的 <code>index</code> 就从 0 变成了 1。<br>这时候 Diff 算法一对比，发现旧列表 <code>key=0</code> 的位置是 A，新列表 <code>key=0</code> 的位置是 X。Vue 就会错误地以为节点没变，只是内容变了，于是强制执行更新。如果这时候旧的 A 节点里面有一个用户已经打钩的 Checkbox，这个打钩的状态就会被错误地保留给 X。这不仅会导致严重的页面状态 Bug，还会让原本可以优化的 Diff 过程退化为全量更新操作。<br>所以，<code>key</code> 一定要用后端返回的唯一 ID，比如数据库的主键。”</p>
+<hr>
+<p>至此，<strong>Vue 核心原理 + 高频八股文</strong>的完整闭环已经为你搭建完毕了。掌握了这些，你足以应对绝大部分中高级前端面试中关于 Vue 的连环追问。</p>
+</article><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2026/03/07/react18/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">React18 完整学习笔记</div></div></a></div><div class="next-post pull-right"><a href="/2026/03/09/WebSocket/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">WebSocket</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2026/03/11/Vue-Diff%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/" title="Vue Diff算法原理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026年03月11日</div><div class="title">Vue Diff算法原理</div></div></a></div><div><a href="/2026/03/11/Vue%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" title="Vue模板编译原理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026年03月11日</div><div class="title">Vue模板编译原理</div></div></a></div><div><a href="/2026/03/03/vue%E6%A1%86%E6%9E%B6%E5%8D%87%E7%BA%A7/" title="vue框架升级 - 大型项目的平滑迁移"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026年03月03日</div><div class="title">vue框架升级 - 大型项目的平滑迁移</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tom_jerry/31.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tusiji/0007.gif" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">可在左下角或上方我的/音乐馆播放音乐; <br/>可通过标签或者分类看文章; <br/>可切换白天跟夜间模式</div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>公告</span></div><div class="announcement_content">笔记了</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%9AVue-%E7%BC%96%E8%AF%91%E4%B8%8E%E6%B8%B2%E6%9F%93%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B%EF%BC%88%E6%A0%B8%E5%BF%83%E7%AC%94%E8%AE%B0%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">第一部分：Vue 编译与渲染完整流程（核心笔记）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E9%9D%A2%E8%AF%95%E5%8F%A3%E8%BF%B0%E7%89%88%EF%BC%88%E9%80%90%E5%AD%97%E7%A8%BF%E5%8F%82%E8%80%83%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">第二部分：面试口述版（逐字稿参考）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%BD%E5%8A%A0%E5%9C%BA%E6%99%AF%E4%B8%80%EF%BC%9A%E9%9D%A2%E8%AF%95%E5%AE%98%E8%BF%BD%E9%97%AE%E2%80%9C%E4%BD%A0%E8%83%BD%E8%AF%A6%E7%BB%86%E8%AF%B4%E8%AF%B4-Vue-%E7%9A%84-Diff-%E7%AE%97%E6%B3%95%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84%E5%90%97%EF%BC%9F%E2%80%9D"><span class="toc-number">3.</span> <span class="toc-text">追加场景一：面试官追问“你能详细说说 Vue 的 Diff 算法是怎么工作的吗？”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%BD%E5%8A%A0%E5%9C%BA%E6%99%AF%E4%BA%8C%EF%BC%9A%E9%9D%A2%E8%AF%95%E5%AE%98%E8%BF%BD%E9%97%AE%E2%80%9C%E4%BD%A0%E5%88%9A%E6%89%8D%E6%8F%90%E5%88%B0%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%EF%BC%8C%E9%82%A3-Vue-3-%E5%9C%A8%E7%BC%96%E8%AF%91%E5%92%8C%E6%B8%B2%E6%9F%93%E4%B8%8A%EF%BC%8C%E6%AF%94-Vue-2-%E5%81%9A%E4%BA%86%E5%93%AA%E4%BA%9B%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%EF%BC%9F%E2%80%9D"><span class="toc-number">4.</span> <span class="toc-text">追加场景二：面试官追问“你刚才提到模板编译，那 Vue 3 在编译和渲染上，比 Vue 2 做了哪些性能优化？”</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E4%BA%86%E8%BF%99%E4%B8%A4%E6%AE%B5%E8%BF%BD%E5%8A%A0%E8%AF%9D%E6%9C%AF%EF%BC%8C%E4%BD%A0%E7%9A%84-Vue-%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B%E5%BA%A6%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87%E5%B0%B1%E9%9D%9E%E5%B8%B8%E7%AB%8B%E4%BD%93%E4%BA%86%E3%80%82%E6%97%A2%E6%9C%89%E5%AE%8F%E8%A7%82%E7%9A%84%E9%AA%A8%E6%9E%B6%EF%BC%88%E4%B8%8A%E4%B8%80%E6%9D%A1%E5%9B%9E%E5%A4%8D%EF%BC%89%EF%BC%8C%E5%8F%88%E6%9C%89%E5%BE%AE%E8%A7%82%E7%9A%84%E8%82%8C%E8%82%89%EF%BC%88%E8%BF%99%E4%B8%A4%E6%AE%B5%E8%BF%BD%E9%97%AE%EF%BC%89%E3%80%82%E4%BD%A0%E5%8F%AF%E4%BB%A5%E5%A4%9A%E5%AF%B9%E7%9D%80%E9%95%9C%E5%AD%90%E6%88%96%E8%80%85%E5%BD%95%E9%9F%B3%E7%BB%83%E4%B9%A0%E5%87%A0%E9%81%8D%EF%BC%8C%E6%89%BE%E6%89%BE%E8%87%AA%E7%84%B6%E4%BA%A4%E6%B5%81%E7%9A%84%E8%AF%AD%E6%84%9F%E3%80%82%E9%9C%80%E8%A6%81%E6%88%91%E5%B8%AE%E4%BD%A0%E5%86%8D%E6%A2%B3%E7%90%86%E4%B8%80%E4%B8%8B%E5%85%B6%E4%BB%96%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E9%A2%98%E5%90%97%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">有了这两段追加话术，你的 Vue 渲染流程度面试准备就非常立体了。既有宏观的骨架（上一条回复），又有微观的肌肉（这两段追问）。你可以多对着镜子或者录音练习几遍，找找自然交流的语感。需要我帮你再梳理一下其他前端面试高频题吗？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E7%89%87%E4%B8%80%EF%BC%9A%E9%92%88%E5%AF%B9%E2%80%9C%E5%93%8D%E5%BA%94%E5%BC%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E2%80%9D%E7%9A%84%E6%B7%B1%E6%8C%96"><span class="toc-number">1.</span> <span class="toc-text">切片一：针对“响应式初始化”的深挖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E7%89%87%E4%BA%8C%EF%BC%9A%E9%92%88%E5%AF%B9%E2%80%9C%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E2%80%9D%E7%9A%84%E6%B7%B1%E6%8C%96"><span class="toc-number">2.</span> <span class="toc-text">切片二：针对“模板编译”的深挖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E7%89%87%E4%B8%89%EF%BC%9A%E9%92%88%E5%AF%B9%E2%80%9C%E9%A6%96%E5%B1%8F%E6%B8%B2%E6%9F%93%E4%B8%8E%E8%99%9A%E6%8B%9F-DOM%E2%80%9D%E7%9A%84%E6%B7%B1%E6%8C%96"><span class="toc-number">3.</span> <span class="toc-text">切片三：针对“首屏渲染与虚拟 DOM”的深挖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E7%89%87%E5%9B%9B%EF%BC%9A%E9%92%88%E5%AF%B9%E2%80%9C%E6%95%B0%E6%8D%AE%E6%9B%B4%E6%96%B0%E2%80%9D%E7%9A%84%E6%B7%B1%E6%8C%96"><span class="toc-number">4.</span> <span class="toc-text">切片四：针对“数据更新”的深挖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%A2%98%EF%BC%9A%E8%AF%B4%E4%B8%8B%E8%99%9A%E6%8B%9F-DOM-Diff-%E7%AE%97%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">第一题：说下虚拟 DOM &amp; Diff 算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%A2%98%EF%BC%9A%E8%AF%B4%E4%B8%8B-Vue-2-Vue-3-%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">第二题：说下 Vue 2 &amp; Vue 3 响应式原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%A2%98%EF%BC%9A%E8%AF%B4%E4%B8%8B%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="toc-number">7.</span> <span class="toc-text">第三题：说下模板编译过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E4%B8%AA%E5%BF%85%E8%80%83%E7%82%B9%EF%BC%9Acomputed-%E5%92%8C-watch-%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%8E%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9F"><span class="toc-number">8.</span> <span class="toc-text">第四个必考点：computed 和 watch 的区别与使用场景？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E4%B8%AA%E5%BF%85%E8%80%83%E7%82%B9%EF%BC%9AVue-Router-%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%EF%BC%88Hash-%E5%92%8C-History-%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%89"><span class="toc-number">9.</span> <span class="toc-text">第五个必考点：Vue Router 的底层原理（Hash 和 History 模式的区别）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E4%B8%AA%E5%BF%85%E8%80%83%E7%82%B9%EF%BC%9Akeep-alive-%E7%9A%84%E7%90%86%E8%A7%A3%E4%B8%8E%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-number">10.</span> <span class="toc-text">第六个必考点：keep-alive 的理解与底层原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E4%B8%AA%E5%BF%85%E8%80%83%E7%82%B9%EF%BC%9Av-if-%E5%92%8C-v-show-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F%E5%BA%95%E5%B1%82%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F"><span class="toc-number">11.</span> <span class="toc-text">第七个必考点：v-if 和 v-show 的区别？底层是怎么实现的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E4%B8%AA%E5%BF%85%E8%80%83%E7%82%B9%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BB%84%E4%BB%B6%E7%9A%84-data-%E5%BF%85%E9%A1%BB%E6%98%AF%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%EF%BC%8C%E8%80%8C%E6%A0%B9%E5%AE%9E%E4%BE%8B%E5%8F%AF%E4%BB%A5%E6%98%AF%E5%AF%B9%E8%B1%A1%EF%BC%9F"><span class="toc-number">12.</span> <span class="toc-text">第八个必考点：为什么组件的 data 必须是一个函数，而根实例可以是对象？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B9%9D%E4%B8%AA%E5%BF%85%E8%80%83%E7%82%B9%EF%BC%9Av-for-%E4%B8%AD%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8-key%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E6%8E%A8%E8%8D%90%E7%94%A8-index%EF%BC%88%E7%B4%A2%E5%BC%95%EF%BC%89%E4%BD%9C%E4%B8%BA-key%EF%BC%9F"><span class="toc-number">13.</span> <span class="toc-text">第九个必考点：v-for 中为什么要用 key？为什么不推荐用 index（索引）作为 key？</span></a></li></ol></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2023 - 2026 By <a class="footer-bar-link" href="/" title="OHNII" target="_blank">OHNII</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">34</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">9</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://hexo.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=14392214326&amp;server=netease&amp;type=playlist"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-music"></use></svg><span> 音乐馆</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AI/" style="font-size: 0.88rem;">AI<sup>2</sup></a><a href="/tags/CI-CD/" style="font-size: 0.88rem;">CI/CD<sup>1</sup></a><a href="/tags/DevOps/" style="font-size: 0.88rem;">DevOps<sup>1</sup></a><a href="/tags/Docker/" style="font-size: 0.88rem;">Docker<sup>5</sup></a><a href="/tags/Jenkins/" style="font-size: 0.88rem;">Jenkins<sup>1</sup></a><a href="/tags/Kubernetes/" style="font-size: 0.88rem;">Kubernetes<sup>1</sup></a><a href="/tags/MPC/" style="font-size: 0.88rem;">MPC<sup>2</sup></a><a href="/tags/Openclaw/" style="font-size: 0.88rem;">Openclaw<sup>1</sup></a><a href="/tags/WebSocket/" style="font-size: 0.88rem;">WebSocket<sup>1</sup></a><a href="/tags/git/" style="font-size: 0.88rem;">git<sup>1</sup></a><a href="/tags/github/" style="font-size: 0.88rem;">github<sup>1</sup></a><a href="/tags/javascript/" style="font-size: 0.88rem;">javascript<sup>1</sup></a><a href="/tags/npm/" style="font-size: 0.88rem;">npm<sup>1</sup></a><a href="/tags/react/" style="font-size: 0.88rem;">react<sup>1</sup></a><a href="/tags/react-router/" style="font-size: 0.88rem;">react-router<sup>1</sup></a><a href="/tags/redux/" style="font-size: 0.88rem;">redux<sup>1</sup></a><a href="/tags/typescript/" style="font-size: 0.88rem;">typescript<sup>1</sup></a><a href="/tags/vue/" style="font-size: 0.88rem;">vue<sup>4</sup></a><a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 0.88rem;">工具<sup>1</sup></a><a href="/tags/%E5%B8%B8%E8%A7%81%E4%BB%AC/" style="font-size: 0.88rem;">常见们<sup>10</sup></a><a href="/tags/%E7%BD%91%E7%AB%99/" style="font-size: 0.88rem;">网站<sup>1</sup></a><a href="/tags/%E8%B0%B7%E6%AD%8C/" style="font-size: 0.88rem;">谷歌<sup>1</sup></a><a href="/tags/%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/" style="font-size: 0.88rem;">适配方案<sup>1</sup></a><a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 0.88rem;">面试<sup>1</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="14392214326" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="https://cdn.cbd.int/hexo-theme-anzhiyu@1.7.0/source/js/utils.js"></script><script src="https://cdn.cbd.int/hexo-theme-anzhiyu@1.7.0/source/js/main.js"></script><script src="https://cdn.cbd.int/hexo-theme-anzhiyu@1.7.0/source/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>var meting_api = "https://meting.qjqq.cn/?server=:server&type=:type&id=:id&auth=:auth&r=:r";
+</script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://cdn.cbd.int/qrcodejs@1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404')
+  }
+})</script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>

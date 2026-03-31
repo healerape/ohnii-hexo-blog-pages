@@ -1,0 +1,423 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>vue框架升级 - 大型项目的平滑迁移 | 2ndMind</title><meta name="keywords" content="vue"><meta name="author" content="OHNII"><meta name="copyright" content="OHNII"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="vue框架升级 - 大型项目的平滑迁移"><meta name="application-name" content="vue框架升级 - 大型项目的平滑迁移"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="vue框架升级 - 大型项目的平滑迁移"><meta property="og:url" content="https://www.ninini.site/2026/03/03/vue%E6%A1%86%E6%9E%B6%E5%8D%87%E7%BA%A7/index.html"><meta property="og:site_name" content="2ndMind"><meta property="og:description" content="项目架构升级实战指南 (Vue 2 -&amp;gt; Vue 3 &amp;#x2F; Webpack -&amp;gt; Vite)本手册记录了 eco-etc-firm-fleet-ui-v3 从旧版技术栈全面升级至现代前端基座的完整路径、核心脚本与具体操作流程。  1. 架构设计全景对比 (Framework Co"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tom_jerry/31.jpg"><meta property="article:author" content="OHNII"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tom_jerry/31.jpg"><meta name="description" content="项目架构升级实战指南 (Vue 2 -&amp;gt; Vue 3 &amp;#x2F; Webpack -&amp;gt; Vite)本手册记录了 eco-etc-firm-fleet-ui-v3 从旧版技术栈全面升级至现代前端基座的完整路径、核心脚本与具体操作流程。  1. 架构设计全景对比 (Framework Co"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="https://www.ninini.site/2026/03/03/vue%E6%A1%86%E6%9E%B6%E5%8D%87%E7%BA%A7/"><link rel="preconnect" href="//cdn.cbd.int"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: {"enable":true,"img":"https://upload-bbs.miyoushe.com/upload/2024/07/27/125766904/ba62475f396df9de3316a08ed9e65d86_5680958632268053399..png"},
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: undefined,
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"你好鸭👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"古德莫宁👋","startTime":6,"endTime":9},{"greeting":"上午好👋认真工作学习","startTime":10,"endTime":10},{"greeting":"11点多了, 点外卖了","startTime":11,"endTime":11},{"greeting":"午安👋","startTime":12,"endTime":14},{"greeting":"🌈充实辛苦的一天","startTime":14,"endTime":18},{"greeting":"19点喽, 吃饭了吗🍔","startTime":19,"endTime":19},{"greeting":"晚上好👋请高兴地休息吧😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 多喝热水","🏠 早睡早起"]},
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: OHNII","link":"链接: ","source":"来源: 2ndMind","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '2ndMind',
+  title: 'vue框架升级 - 大型项目的平滑迁移',
+  postAI: '',
+  pageFillDescription: '项目架构升级实战指南 (Vue 2 -gt Vue 3 x2F Webpack -gt Vite), 1. 架构设计全景对比 (Framework Comparison), 2. 核心迁移流水线 (Step-by-Step), Step 1 环境与依赖重置, Step 2 自动化脚本修复 (关键操作), Step 3 构建引擎切换 (Vite 配置), Step 4 框架代码重写, 3. 代码前后对比 (Code Diffs), 3.1 入口文件 (main.js), 3.2 样式穿透 (Styles), 3.3 状态管理调用 (Store), 4. 后续路线图 (Roadmap), 5. 附录：自动化脚本源码 (Automation Scripts), 5.1 样式修复脚本 (fix-styles.js), 5.2 移除波浪号脚本 (remove-tilde.js), 5.3 变量重命名脚本 (rename-variables.js), 5.4 导入路径迁移脚本 (migrate-imports.js)项目架构升级实战指南本手册记录了从旧版技术栈全面升级至现代前端基座的完整路径核心脚本与具体操作流程架构设计全景对比维度旧架构新架构升级理由长期支持版性能更强包管理器节省磁盘空间安装飞快构建工具毫秒级热更新开发体验质变前端框架组合式更好的支持组件库适配更现代的状态管理类型安全逻辑更扁平路由库适配更简洁引擎经常安装失败无需编译二进制跨平台稳定核心迁移流水线环境与依赖重置清理旧环境删除和引擎升级在中设置核心包替换移除旧包安装新包自动化脚本修复关键操作为了批量处理数千个文件我们编写并执行了以下脚本脚本名称具体作用操作流程将替换为移除中废弃的前缀将转为将引用改为构建引擎切换配置移动将移至根目录添加配置别名在中配置和的映射注入全局变量使用模拟以兼容旧代码处理使用拦截并转换中的图片框架代码重写入口重构将从模式重写为模式桥接创建通过全局属性模拟的接口实现旧组件无感知迁移路由升级将升级至规范通配符改为代码前后对比入口文件样式穿透状态管理调用代码无需改动会自动将请求分发给相应的后续路线图业务适配进行中将改为组件通信修改对齐待开始检查等失效属性对齐为性能优化在中配置拆包减少首屏体积附录自动化脚本源码为了方便后续维护和复用以下是迁移过程中使用的所有自动化处理脚本样式修复脚本作用将文件中的替换为兼容的移除波浪号脚本作用移除不再需要的前缀变量重命名脚本作用重命名并在项目中更新所有引用路径导入路径迁移脚本作用将统一重写为原生的导入',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026年03月31日 02:33:24',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tom_jerry/31.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="/" accesskey="h"><div class="title">2ndMind</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=14392214326&amp;server=netease&amp;type=playlist"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-music"></use></svg><span> 音乐馆</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AI/" style="font-size: 1.05rem;">AI<sup>2</sup></a><a href="/tags/CI-CD/" style="font-size: 1.05rem;">CI/CD<sup>1</sup></a><a href="/tags/DevOps/" style="font-size: 1.05rem;">DevOps<sup>1</sup></a><a href="/tags/Docker/" style="font-size: 1.05rem;">Docker<sup>5</sup></a><a href="/tags/Jenkins/" style="font-size: 1.05rem;">Jenkins<sup>1</sup></a><a href="/tags/Kubernetes/" style="font-size: 1.05rem;">Kubernetes<sup>1</sup></a><a href="/tags/MPC/" style="font-size: 1.05rem;">MPC<sup>2</sup></a><a href="/tags/Openclaw/" style="font-size: 1.05rem;">Openclaw<sup>1</sup></a><a href="/tags/WebSocket/" style="font-size: 1.05rem;">WebSocket<sup>1</sup></a><a href="/tags/git/" style="font-size: 1.05rem;">git<sup>1</sup></a><a href="/tags/github/" style="font-size: 1.05rem;">github<sup>1</sup></a><a href="/tags/javascript/" style="font-size: 1.05rem;">javascript<sup>1</sup></a><a href="/tags/npm/" style="font-size: 1.05rem;">npm<sup>1</sup></a><a href="/tags/react/" style="font-size: 1.05rem;">react<sup>1</sup></a><a href="/tags/react-router/" style="font-size: 1.05rem;">react-router<sup>1</sup></a><a href="/tags/redux/" style="font-size: 1.05rem;">redux<sup>1</sup></a><a href="/tags/typescript/" style="font-size: 1.05rem;">typescript<sup>1</sup></a><a href="/tags/vue/" style="font-size: 1.05rem;">vue<sup>4</sup></a><a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.05rem;">工具<sup>1</sup></a><a href="/tags/%E5%B8%B8%E8%A7%81%E4%BB%AC/" style="font-size: 1.05rem;">常见们<sup>10</sup></a><a href="/tags/%E7%BD%91%E7%AB%99/" style="font-size: 1.05rem;">网站<sup>1</sup></a><a href="/tags/%E8%B0%B7%E6%AD%8C/" style="font-size: 1.05rem;">谷歌<sup>1</sup></a><a href="/tags/%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/" style="font-size: 1.05rem;">适配方案<sup>1</sup></a><a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 1.05rem;">面试<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/03/"><span class="card-archive-list-date">三月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">20</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/02/"><span class="card-archive-list-date">二月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">9</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/10/"><span class="card-archive-list-date">十月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/07/"><span class="card-archive-list-date">七月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/08/"><span class="card-archive-list-date">八月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/03/"><span class="card-archive-list-date">三月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="article-meta tags"><a class="article-meta__tags" href="/tags/vue/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>vue</span></a></span></div></div><h1 class="post-title" itemprop="name headline">vue框架升级 - 大型项目的平滑迁移</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2026-03-03T15:57:44.000Z" title="发表于 2026年03月03日 15:57:44">2026年03月03日</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2026-03-31T02:33:24.239Z" title="更新于 2026年03月31日 02:33:24">2026年03月31日</time></span></div><div class="meta-secondline"></div></div></div><article class="post-content" id="article-container" itemscope itemtype="https://www.ninini.site/2026/03/03/vue%E6%A1%86%E6%9E%B6%E5%8D%87%E7%BA%A7/"><header><a href="/tags/vue/" tabindex="-1" itemprop="url">vue</a><h1 id="CrawlerTitle" itemprop="name headline">vue框架升级 - 大型项目的平滑迁移</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">OHNII</span><time itemprop="dateCreated datePublished" datetime="2026-03-03T15:57:44.000Z" title="发表于 2026年03月03日 15:57:44">2026年03月03日</time><time itemprop="dateCreated datePublished" datetime="2026-03-31T02:33:24.239Z" title="更新于 2026年03月31日 02:33:24">2026年03月31日</time></header><h1 id="项目架构升级实战指南-Vue-2-Vue-3-Webpack-Vite"><a href="#项目架构升级实战指南-Vue-2-Vue-3-Webpack-Vite" class="headerlink" title="项目架构升级实战指南 (Vue 2 -&gt; Vue 3 &#x2F; Webpack -&gt; Vite)"></a>项目架构升级实战指南 (Vue 2 -&gt; Vue 3 &#x2F; Webpack -&gt; Vite)</h1><p>本手册记录了 <code>eco-etc-firm-fleet-ui-v3</code> 从旧版技术栈全面升级至现代前端基座的完整路径、核心脚本与具体操作流程。</p>
+<hr>
+<h2 id="1-架构设计全景对比-Framework-Comparison"><a href="#1-架构设计全景对比-Framework-Comparison" class="headerlink" title="1. 架构设计全景对比 (Framework Comparison)"></a>1. 架构设计全景对比 (Framework Comparison)</h2><table>
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">Webpack 旧架构 (Legacy)</th>
+<th align="left">Vite + Vue 3 新架构 (Current)</th>
+<th align="left">升级理由</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Node.js</strong></td>
+<td align="left">v14.x</td>
+<td align="left"><strong>v24.x</strong></td>
+<td align="left">长期支持版，性能更强</td>
+</tr>
+<tr>
+<td align="left"><strong>包管理器</strong></td>
+<td align="left">npm</td>
+<td align="left"><strong>pnpm</strong></td>
+<td align="left">节省磁盘空间，安装飞快</td>
+</tr>
+<tr>
+<td align="left"><strong>构建工具</strong></td>
+<td align="left">Webpack 4 &#x2F; Vue CLI</td>
+<td align="left"><strong>Vite 7.3</strong></td>
+<td align="left">毫秒级热更新，开发体验质变</td>
+</tr>
+<tr>
+<td align="left"><strong>前端框架</strong></td>
+<td align="left">Vue 2.7.16</td>
+<td align="left"><strong>Vue 3.x</strong></td>
+<td align="left">组合式 API，更好的 TS 支持</td>
+</tr>
+<tr>
+<td align="left"><strong>UI 组件库</strong></td>
+<td align="left">element-ui 2.13</td>
+<td align="left"><strong>element-plus</strong></td>
+<td align="left">适配 Vue 3，更现代的 UI</td>
+</tr>
+<tr>
+<td align="left"><strong>状态管理</strong></td>
+<td align="left">Vuex 3.x</td>
+<td align="left"><strong>Pinia 2.x</strong></td>
+<td align="left">类型安全，逻辑更扁平</td>
+</tr>
+<tr>
+<td align="left"><strong>路由库</strong></td>
+<td align="left">vue-router 3.x</td>
+<td align="left"><strong>vue-router 4.x</strong></td>
+<td align="left">适配 Vue 3，API 更简洁</td>
+</tr>
+<tr>
+<td align="left"><strong>Sass 引擎</strong></td>
+<td align="left">node-sass (经常安装失败)</td>
+<td align="left"><strong>sass (Dart Sass)</strong></td>
+<td align="left">无需编译二进制，跨平台稳定</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-核心迁移流水线-Step-by-Step"><a href="#2-核心迁移流水线-Step-by-Step" class="headerlink" title="2. 核心迁移流水线 (Step-by-Step)"></a>2. 核心迁移流水线 (Step-by-Step)</h2><h3 id="Step-1-环境与依赖重置"><a href="#Step-1-环境与依赖重置" class="headerlink" title="Step 1: 环境与依赖重置"></a>Step 1: 环境与依赖重置</h3><ol>
+<li><strong>清理旧环境</strong>: 删除 <code>node_modules</code> 和 <code>package-lock.json</code>。</li>
+<li><strong>引擎升级</strong>: 在 <code>package.json</code> 中设置 <code>&quot;engines&quot;: &#123; &quot;node&quot;: &quot;&gt;=24&quot; &#125;</code>。</li>
+<li><strong>核心包替换</strong>:<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 移除旧包</span></span><br><span class="line">pnpm remove vue vue<span class="literal">-router</span> vuex element<span class="literal">-ui</span> node<span class="literal">-sass</span></span><br><span class="line"><span class="comment"># 安装新包</span></span><br><span class="line">pnpm add vue@latest vue<span class="literal">-router</span>@<span class="number">4</span> pinia element<span class="literal">-plus</span> @vueuse/core sass</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Step-2-自动化脚本修复-关键操作"><a href="#Step-2-自动化脚本修复-关键操作" class="headerlink" title="Step 2: 自动化脚本修复 (关键操作)"></a>Step 2: 自动化脚本修复 (关键操作)</h3><p>为了批量处理数千个文件，我们编写并执行了以下 Node.js 脚本：</p>
+<table>
+<thead>
+<tr>
+<th align="left">脚本名称</th>
+<th align="left">具体作用</th>
+<th align="left">操作流程</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>fix-styles.js</code></td>
+<td align="left">将 <code>/deep/</code> 替换为 <code>::v-deep</code></td>
+<td align="left"><code>node fix-styles.js</code></td>
+</tr>
+<tr>
+<td align="left"><code>remove-tilde.js</code></td>
+<td align="left">移除 CSS 中废弃的 <code>~@/</code> 前缀</td>
+<td align="left"><code>node remove-tilde.js</code></td>
+</tr>
+<tr>
+<td align="left"><code>rename-variables.js</code></td>
+<td align="left">将 <code>variables.scss</code> 转为 <code>.module.scss</code></td>
+<td align="left"><code>node rename-variables.js</code></td>
+</tr>
+<tr>
+<td align="left"><code>migrate-imports.js</code></td>
+<td align="left">将 <code>@vue/composition-api</code> 引用改为 <code>vue</code></td>
+<td align="left"><code>node migrate-imports.js</code></td>
+</tr>
+</tbody></table>
+<h3 id="Step-3-构建引擎切换-Vite-配置"><a href="#Step-3-构建引擎切换-Vite-配置" class="headerlink" title="Step 3: 构建引擎切换 (Vite 配置)"></a>Step 3: 构建引擎切换 (Vite 配置)</h3><ol>
+<li><strong>移动 HTML</strong>: 将 <code>public/index.html</code> 移至根目录，添加 <code>&lt;script type=&quot;module&quot; src=&quot;/src/main.js&quot;&gt;&lt;/script&gt;</code>。</li>
+<li><strong>配置别名</strong>: 在 <code>vite.config.js</code> 中配置 <code>@</code> 和 <code>path</code> 的映射。</li>
+<li><strong>注入全局变量</strong>: 使用 <code>define</code> 模拟 <code>process.env.NODE_ENV</code> 以兼容旧代码。</li>
+<li><strong>Require 处理</strong>: 使用 <code>vite-plugin-require-transform</code> 拦截并转换 <code>.vue</code> 中的图片 <code>require</code>。</li>
+</ol>
+<h3 id="Step-4-框架代码重写"><a href="#Step-4-框架代码重写" class="headerlink" title="Step 4: 框架代码重写"></a>Step 4: 框架代码重写</h3><ol>
+<li><strong>入口重构</strong>: 将 <code>main.js</code> 从 <code>new Vue()</code> 模式重写为 <code>createApp()</code> 模式。</li>
+<li><strong>Pinia 桥接</strong>: 创建 <code>src/store/pinia-shim.js</code>，通过全局属性 <code>$store</code> 模拟 Vuex 的 <code>dispatch/commit</code> 接口，实现旧组件<strong>无感知迁移</strong>。</li>
+<li><strong>路由升级</strong>: 将 <code>router.js</code> 升级至 Router 4 规范，通配符 <code>*</code> 改为 <code>:pathMatch(.*)*</code>。</li>
+</ol>
+<hr>
+<h2 id="3-代码前后对比-Code-Diffs"><a href="#3-代码前后对比-Code-Diffs" class="headerlink" title="3. 代码前后对比 (Code Diffs)"></a>3. 代码前后对比 (Code Diffs)</h2><h3 id="3-1-入口文件-main-js"><a href="#3-1-入口文件-main-js" class="headerlink" title="3.1 入口文件 (main.js)"></a>3.1 入口文件 (main.js)</h3><p><strong>Before (Vue 2):</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">ElementUI</span>);</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>(&#123; <span class="attr">render</span>: <span class="function">(<span class="params">h</span>) =&gt;</span> <span class="title function_">h</span>(<span class="title class_">App</span>) &#125;).$mount(<span class="string">&quot;#app&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>After (Vue 3):</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ElementPlus</span> <span class="keyword">from</span> <span class="string">&quot;element-plus&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">createApp</span>(<span class="title class_">App</span>);</span><br><span class="line">app.<span class="title function_">use</span>(<span class="title class_">ElementPlus</span>).<span class="title function_">mount</span>(<span class="string">&quot;#app&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-样式穿透-Styles"><a href="#3-2-样式穿透-Styles" class="headerlink" title="3.2 样式穿透 (Styles)"></a>3.2 样式穿透 (Styles)</h3><p><strong>Before:</strong></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> /deep/ <span class="selector-class">.child</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>After:</strong></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> ::v-deep .child &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-状态管理调用-Store"><a href="#3-3-状态管理调用-Store" class="headerlink" title="3.3 状态管理调用 (Store)"></a>3.3 状态管理调用 (Store)</h3><p><strong>Before (Vuex):</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">$store</span>.<span class="title function_">dispatch</span>(<span class="string">&quot;user/login&quot;</span>, data);</span><br></pre></td></tr></table></figure>
+
+<p><strong>After (Pinia + Shim):</strong><br><em>代码无需改动</em>，<code>pinia-shim.js</code> 会自动将请求分发给相应的 Pinia Store。</p>
+<hr>
+<h2 id="4-后续路线图-Roadmap"><a href="#4-后续路线图-Roadmap" class="headerlink" title="4. 后续路线图 (Roadmap)"></a>4. 后续路线图 (Roadmap)</h2><ol>
+<li>** Step 3: 业务适配 (进行中) **<ul>
+<li><input disabled="" type="checkbox"> <strong>Filters</strong>: 将 <code>&#123;&#123; time | formatDate &#125;&#125;</code> 改为 <code>formatDate(time)</code>。</li>
+<li><input disabled="" type="checkbox"> <strong>v-model</strong>: 组件通信修改（<code>value</code> -&gt; <code>modelValue</code>, <code>sync</code> -&gt; <code>v-model:xxx</code>）。</li>
+</ul>
+</li>
+<li>** Step 4: UI 对齐 (待开始) **<ul>
+<li><input disabled="" type="checkbox"> <strong>Element Plus</strong>: 检查 <code>size=&quot;medium&quot;</code> 等失效属性，对齐为 <code>default/large/small</code>。</li>
+</ul>
+</li>
+<li>** Step 5: 性能优化 **<ul>
+<li><input disabled="" type="checkbox"> <strong>Manual Chunks</strong>: 在 Vite 中配置 Rollup 拆包，减少首屏体积。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="5-附录：自动化脚本源码-Automation-Scripts"><a href="#5-附录：自动化脚本源码-Automation-Scripts" class="headerlink" title="5. 附录：自动化脚本源码 (Automation Scripts)"></a>5. 附录：自动化脚本源码 (Automation Scripts)</h2><p>为了方便后续维护和复用，以下是迁移过程中使用的所有自动化处理脚本。</p>
+<h3 id="5-1-样式修复脚本-fix-styles-js"><a href="#5-1-样式修复脚本-fix-styles-js" class="headerlink" title="5.1 样式修复脚本 (fix-styles.js)"></a>5.1 样式修复脚本 (<code>fix-styles.js</code>)</h3><p><strong>作用</strong>：将 CSS&#x2F;SCSS&#x2F;VUE 文件中的 <code>/deep/</code> 替换为 Vue 3 兼容的 <code>::v-deep</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&quot;path&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">replaceInDir</span>(<span class="params">dir</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> files = fs.<span class="title function_">readdirSync</span>(dir);</span><br><span class="line">  files.<span class="title function_">forEach</span>(<span class="function">(<span class="params">file</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> filePath = path.<span class="title function_">join</span>(dir, file);</span><br><span class="line">    <span class="keyword">const</span> stat = fs.<span class="title function_">statSync</span>(filePath);</span><br><span class="line">    <span class="keyword">if</span> (stat.<span class="title function_">isDirectory</span>()) &#123;</span><br><span class="line">      <span class="keyword">if</span> (file !== <span class="string">&quot;node_modules&quot;</span> &amp;&amp; file !== <span class="string">&quot;.git&quot;</span>) <span class="title function_">replaceInDir</span>(filePath);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (</span><br><span class="line">      file.<span class="title function_">endsWith</span>(<span class="string">&quot;.vue&quot;</span>) ||</span><br><span class="line">      file.<span class="title function_">endsWith</span>(<span class="string">&quot;.scss&quot;</span>) ||</span><br><span class="line">      file.<span class="title function_">endsWith</span>(<span class="string">&quot;.css&quot;</span>)</span><br><span class="line">    ) &#123;</span><br><span class="line">      <span class="keyword">let</span> content = fs.<span class="title function_">readFileSync</span>(filePath, <span class="string">&quot;utf8&quot;</span>);</span><br><span class="line">      <span class="keyword">if</span> (content.<span class="title function_">includes</span>(<span class="string">&quot;/deep/&quot;</span>)) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Fixing:&quot;</span>, filePath);</span><br><span class="line">        <span class="keyword">const</span> newContent = content.<span class="title function_">replace</span>(<span class="regexp">/\/deep\//g</span>, <span class="string">&quot;::v-deep&quot;</span>);</span><br><span class="line">        fs.<span class="title function_">writeFileSync</span>(filePath, newContent, <span class="string">&quot;utf8&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">replaceInDir</span>(path.<span class="title function_">resolve</span>(__dirname, <span class="string">&quot;src&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-移除波浪号脚本-remove-tilde-js"><a href="#5-2-移除波浪号脚本-remove-tilde-js" class="headerlink" title="5.2 移除波浪号脚本 (remove-tilde.js)"></a>5.2 移除波浪号脚本 (<code>remove-tilde.js</code>)</h3><p><strong>作用</strong>：移除 Vite 不再需要的 <code>@import &quot;~@/...&quot;</code> 前缀。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&quot;path&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">replaceInDir</span>(<span class="params">dir</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> files = fs.<span class="title function_">readdirSync</span>(dir);</span><br><span class="line">  files.<span class="title function_">forEach</span>(<span class="function">(<span class="params">file</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> filePath = path.<span class="title function_">join</span>(dir, file);</span><br><span class="line">    <span class="keyword">const</span> stat = fs.<span class="title function_">statSync</span>(filePath);</span><br><span class="line">    <span class="keyword">if</span> (stat.<span class="title function_">isDirectory</span>()) &#123;</span><br><span class="line">      <span class="keyword">if</span> (file !== <span class="string">&quot;node_modules&quot;</span> &amp;&amp; file !== <span class="string">&quot;.git&quot;</span>) <span class="title function_">replaceInDir</span>(filePath);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (</span><br><span class="line">      file.<span class="title function_">endsWith</span>(<span class="string">&quot;.vue&quot;</span>) ||</span><br><span class="line">      file.<span class="title function_">endsWith</span>(<span class="string">&quot;.scss&quot;</span>) ||</span><br><span class="line">      file.<span class="title function_">endsWith</span>(<span class="string">&quot;.css&quot;</span>)</span><br><span class="line">    ) &#123;</span><br><span class="line">      <span class="keyword">let</span> content = fs.<span class="title function_">readFileSync</span>(filePath, <span class="string">&quot;utf8&quot;</span>);</span><br><span class="line">      <span class="keyword">if</span> (content.<span class="title function_">includes</span>(<span class="string">&#x27;@import &quot;~@/&#x27;</span>)) &#123;</span><br><span class="line">        <span class="keyword">const</span> newContent = content.<span class="title function_">replace</span>(<span class="regexp">/@import &quot;~@\//g</span>, <span class="string">&#x27;@import &quot;@/&#x27;</span>);</span><br><span class="line">        fs.<span class="title function_">writeFileSync</span>(filePath, newContent, <span class="string">&quot;utf8&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">replaceInDir</span>(path.<span class="title function_">resolve</span>(__dirname, <span class="string">&quot;src&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-变量重命名脚本-rename-variables-js"><a href="#5-3-变量重命名脚本-rename-variables-js" class="headerlink" title="5.3 变量重命名脚本 (rename-variables.js)"></a>5.3 变量重命名脚本 (<code>rename-variables.js</code>)</h3><p><strong>作用</strong>：重命名 <code>variables.scss</code> 并在项目中更新所有引用路径。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&quot;path&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">replaceInDir</span>(<span class="params">dir</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> files = fs.<span class="title function_">readdirSync</span>(dir);</span><br><span class="line">  files.<span class="title function_">forEach</span>(<span class="function">(<span class="params">file</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> filePath = path.<span class="title function_">join</span>(dir, file);</span><br><span class="line">    <span class="keyword">const</span> stat = fs.<span class="title function_">statSync</span>(filePath);</span><br><span class="line">    <span class="keyword">if</span> (stat.<span class="title function_">isDirectory</span>()) &#123;</span><br><span class="line">      <span class="keyword">if</span> (file !== <span class="string">&quot;node_modules&quot;</span> &amp;&amp; file !== <span class="string">&quot;.git&quot;</span>) <span class="title function_">replaceInDir</span>(filePath);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (</span><br><span class="line">      file.<span class="title function_">endsWith</span>(<span class="string">&quot;.vue&quot;</span>) ||</span><br><span class="line">      file.<span class="title function_">endsWith</span>(<span class="string">&quot;.scss&quot;</span>) ||</span><br><span class="line">      file.<span class="title function_">endsWith</span>(<span class="string">&quot;.js&quot;</span>)</span><br><span class="line">    ) &#123;</span><br><span class="line">      <span class="keyword">let</span> content = fs.<span class="title function_">readFileSync</span>(filePath, <span class="string">&quot;utf8&quot;</span>);</span><br><span class="line">      <span class="keyword">if</span> (content.<span class="title function_">includes</span>(<span class="string">&quot;variables.scss&quot;</span>)) &#123;</span><br><span class="line">        <span class="keyword">const</span> newContent = content.<span class="title function_">replace</span>(</span><br><span class="line">          <span class="regexp">/variables\.scss/g</span>,</span><br><span class="line">          <span class="string">&quot;variables.module.scss&quot;</span>,</span><br><span class="line">        );</span><br><span class="line">        fs.<span class="title function_">writeFileSync</span>(filePath, newContent, <span class="string">&quot;utf8&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> oldPath = path.<span class="title function_">resolve</span>(__dirname, <span class="string">&quot;src/styles/variables.scss&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> newPath = path.<span class="title function_">resolve</span>(__dirname, <span class="string">&quot;src/styles/variables.module.scss&quot;</span>);</span><br><span class="line"><span class="keyword">if</span> (fs.<span class="title function_">existsSync</span>(oldPath)) fs.<span class="title function_">renameSync</span>(oldPath, newPath);</span><br><span class="line"><span class="title function_">replaceInDir</span>(path.<span class="title function_">resolve</span>(__dirname, <span class="string">&quot;src&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-4-导入路径迁移脚本-migrate-imports-js"><a href="#5-4-导入路径迁移脚本-migrate-imports-js" class="headerlink" title="5.4 导入路径迁移脚本 (migrate-imports.js)"></a>5.4 导入路径迁移脚本 (<code>migrate-imports.js</code>)</h3><p><strong>作用</strong>：将 <code>@vue/composition-api</code> 统一重写为原生的 <code>vue</code> 导入。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&quot;path&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">replaceImports</span>(<span class="params">dir</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> files = fs.<span class="title function_">readdirSync</span>(dir);</span><br><span class="line">  files.<span class="title function_">forEach</span>(<span class="function">(<span class="params">file</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> filePath = path.<span class="title function_">join</span>(dir, file);</span><br><span class="line">    <span class="keyword">if</span> (fs.<span class="title function_">statSync</span>(filePath).<span class="title function_">isDirectory</span>()) &#123;</span><br><span class="line">      <span class="keyword">if</span> (file !== <span class="string">&quot;node_modules&quot;</span>) <span class="title function_">replaceImports</span>(filePath);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (file.<span class="title function_">endsWith</span>(<span class="string">&quot;.vue&quot;</span>) || file.<span class="title function_">endsWith</span>(<span class="string">&quot;.js&quot;</span>)) &#123;</span><br><span class="line">      <span class="keyword">let</span> content = fs.<span class="title function_">readFileSync</span>(filePath, <span class="string">&quot;utf8&quot;</span>);</span><br><span class="line">      <span class="keyword">if</span> (content.<span class="title function_">includes</span>(<span class="string">&quot;@vue/composition-api&quot;</span>)) &#123;</span><br><span class="line">        <span class="keyword">const</span> newContent = content.<span class="title function_">replace</span>(</span><br><span class="line">          <span class="regexp">/[&#x27;&quot;]@vue\/composition-api[&#x27;&quot;]/g</span>,</span><br><span class="line">          <span class="string">&quot;&#x27;vue&#x27;&quot;</span>,</span><br><span class="line">        );</span><br><span class="line">        fs.<span class="title function_">writeFileSync</span>(filePath, newContent, <span class="string">&quot;utf8&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">replaceImports</span>(path.<span class="title function_">resolve</span>(__dirname, <span class="string">&quot;src&quot;</span>));</span><br></pre></td></tr></table></figure>
+</article><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2026/03/02/Windows%E5%AE%89%E8%A3%85Openclaw/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Windows安装Openclaw</div></div></a></div><div class="next-post pull-right"><a href="/2026/03/07/react18/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">React18 完整学习笔记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2026/03/11/Vue-Diff%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/" title="Vue Diff算法原理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026年03月11日</div><div class="title">Vue Diff算法原理</div></div></a></div><div><a href="/2026/03/11/Vue%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" title="Vue模板编译原理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026年03月11日</div><div class="title">Vue模板编译原理</div></div></a></div><div><a href="/2026/03/08/Vue%E4%BB%8E%E7%BC%96%E8%AF%91%E5%88%B0%E9%A1%B5%E9%9D%A2%E6%98%BE%E7%A4%BA%E7%9A%84%E5%85%A8%E9%93%BE%E8%B7%AF%E6%B5%81%E7%A8%8B/" title="Vue从编译到页面显示的全链路流程"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026年03月08日</div><div class="title">Vue从编译到页面显示的全链路流程</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tom_jerry/31.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tusiji/0007.gif" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">可在左下角或上方我的/音乐馆播放音乐; <br/>可通过标签或者分类看文章; <br/>可切换白天跟夜间模式</div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>公告</span></div><div class="announcement_content">笔记了</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E5%8D%87%E7%BA%A7%E5%AE%9E%E6%88%98%E6%8C%87%E5%8D%97-Vue-2-Vue-3-Webpack-Vite"><span class="toc-number">1.</span> <span class="toc-text">项目架构升级实战指南 (Vue 2 -&gt; Vue 3 &#x2F; Webpack -&gt; Vite)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%85%A8%E6%99%AF%E5%AF%B9%E6%AF%94-Framework-Comparison"><span class="toc-number">1.1.</span> <span class="toc-text">1. 架构设计全景对比 (Framework Comparison)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A0%B8%E5%BF%83%E8%BF%81%E7%A7%BB%E6%B5%81%E6%B0%B4%E7%BA%BF-Step-by-Step"><span class="toc-number">1.2.</span> <span class="toc-text">2. 核心迁移流水线 (Step-by-Step)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-1-%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96%E9%87%8D%E7%BD%AE"><span class="toc-number">1.2.1.</span> <span class="toc-text">Step 1: 环境与依赖重置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-2-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC%E4%BF%AE%E5%A4%8D-%E5%85%B3%E9%94%AE%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.2.</span> <span class="toc-text">Step 2: 自动化脚本修复 (关键操作)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-3-%E6%9E%84%E5%BB%BA%E5%BC%95%E6%93%8E%E5%88%87%E6%8D%A2-Vite-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.3.</span> <span class="toc-text">Step 3: 构建引擎切换 (Vite 配置)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-4-%E6%A1%86%E6%9E%B6%E4%BB%A3%E7%A0%81%E9%87%8D%E5%86%99"><span class="toc-number">1.2.4.</span> <span class="toc-text">Step 4: 框架代码重写</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BB%A3%E7%A0%81%E5%89%8D%E5%90%8E%E5%AF%B9%E6%AF%94-Code-Diffs"><span class="toc-number">1.3.</span> <span class="toc-text">3. 代码前后对比 (Code Diffs)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%85%A5%E5%8F%A3%E6%96%87%E4%BB%B6-main-js"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 入口文件 (main.js)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%A0%B7%E5%BC%8F%E7%A9%BF%E9%80%8F-Styles"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 样式穿透 (Styles)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%B0%83%E7%94%A8-Store"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 状态管理调用 (Store)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%90%8E%E7%BB%AD%E8%B7%AF%E7%BA%BF%E5%9B%BE-Roadmap"><span class="toc-number">1.4.</span> <span class="toc-text">4. 后续路线图 (Roadmap)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E9%99%84%E5%BD%95%EF%BC%9A%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC%E6%BA%90%E7%A0%81-Automation-Scripts"><span class="toc-number">1.5.</span> <span class="toc-text">5. 附录：自动化脚本源码 (Automation Scripts)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%A0%B7%E5%BC%8F%E4%BF%AE%E5%A4%8D%E8%84%9A%E6%9C%AC-fix-styles-js"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 样式修复脚本 (fix-styles.js)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E7%A7%BB%E9%99%A4%E6%B3%A2%E6%B5%AA%E5%8F%B7%E8%84%9A%E6%9C%AC-remove-tilde-js"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 移除波浪号脚本 (remove-tilde.js)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E5%8F%98%E9%87%8F%E9%87%8D%E5%91%BD%E5%90%8D%E8%84%9A%E6%9C%AC-rename-variables-js"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 变量重命名脚本 (rename-variables.js)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E5%AF%BC%E5%85%A5%E8%B7%AF%E5%BE%84%E8%BF%81%E7%A7%BB%E8%84%9A%E6%9C%AC-migrate-imports-js"><span class="toc-number">1.5.4.</span> <span class="toc-text">5.4 导入路径迁移脚本 (migrate-imports.js)</span></a></li></ol></li></ol></li></ol></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2023 - 2026 By <a class="footer-bar-link" href="/" title="OHNII" target="_blank">OHNII</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">34</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">9</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://hexo.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=14392214326&amp;server=netease&amp;type=playlist"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-music"></use></svg><span> 音乐馆</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AI/" style="font-size: 0.88rem;">AI<sup>2</sup></a><a href="/tags/CI-CD/" style="font-size: 0.88rem;">CI/CD<sup>1</sup></a><a href="/tags/DevOps/" style="font-size: 0.88rem;">DevOps<sup>1</sup></a><a href="/tags/Docker/" style="font-size: 0.88rem;">Docker<sup>5</sup></a><a href="/tags/Jenkins/" style="font-size: 0.88rem;">Jenkins<sup>1</sup></a><a href="/tags/Kubernetes/" style="font-size: 0.88rem;">Kubernetes<sup>1</sup></a><a href="/tags/MPC/" style="font-size: 0.88rem;">MPC<sup>2</sup></a><a href="/tags/Openclaw/" style="font-size: 0.88rem;">Openclaw<sup>1</sup></a><a href="/tags/WebSocket/" style="font-size: 0.88rem;">WebSocket<sup>1</sup></a><a href="/tags/git/" style="font-size: 0.88rem;">git<sup>1</sup></a><a href="/tags/github/" style="font-size: 0.88rem;">github<sup>1</sup></a><a href="/tags/javascript/" style="font-size: 0.88rem;">javascript<sup>1</sup></a><a href="/tags/npm/" style="font-size: 0.88rem;">npm<sup>1</sup></a><a href="/tags/react/" style="font-size: 0.88rem;">react<sup>1</sup></a><a href="/tags/react-router/" style="font-size: 0.88rem;">react-router<sup>1</sup></a><a href="/tags/redux/" style="font-size: 0.88rem;">redux<sup>1</sup></a><a href="/tags/typescript/" style="font-size: 0.88rem;">typescript<sup>1</sup></a><a href="/tags/vue/" style="font-size: 0.88rem;">vue<sup>4</sup></a><a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 0.88rem;">工具<sup>1</sup></a><a href="/tags/%E5%B8%B8%E8%A7%81%E4%BB%AC/" style="font-size: 0.88rem;">常见们<sup>10</sup></a><a href="/tags/%E7%BD%91%E7%AB%99/" style="font-size: 0.88rem;">网站<sup>1</sup></a><a href="/tags/%E8%B0%B7%E6%AD%8C/" style="font-size: 0.88rem;">谷歌<sup>1</sup></a><a href="/tags/%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/" style="font-size: 0.88rem;">适配方案<sup>1</sup></a><a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 0.88rem;">面试<sup>1</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="14392214326" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="https://cdn.cbd.int/hexo-theme-anzhiyu@1.7.0/source/js/utils.js"></script><script src="https://cdn.cbd.int/hexo-theme-anzhiyu@1.7.0/source/js/main.js"></script><script src="https://cdn.cbd.int/hexo-theme-anzhiyu@1.7.0/source/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>var meting_api = "https://meting.qjqq.cn/?server=:server&type=:type&id=:id&auth=:auth&r=:r";
+</script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://cdn.cbd.int/qrcodejs@1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404')
+  }
+})</script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>

@@ -1,0 +1,632 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>前端工程化完整指南 | 2ndMind</title><meta name="keywords" content="常见们"><meta name="author" content="OHNII"><meta name="copyright" content="OHNII"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="前端工程化完整指南"><meta name="application-name" content="前端工程化完整指南"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="前端工程化完整指南"><meta property="og:url" content="https://www.ninini.site/2026/03/11/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/index.html"><meta property="og:site_name" content="2ndMind"><meta property="og:description" content="前端工程化完整指南核心流程（记忆关键）记忆口诀：规范先行，构建打包，测试部署，监控优化 工程化体系：代码规范 → 模块化 → 构建工具 → 自动化测试 → CI&amp;#x2F;CD → 监控体系  1. 什么是前端工程化？1.1 定义与目标定义：前端工程化是使用软件工程的方法来组织前端开发流程，通过工具"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tom_jerry/31.jpg"><meta property="article:author" content="OHNII"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tom_jerry/31.jpg"><meta name="description" content="前端工程化完整指南核心流程（记忆关键）记忆口诀：规范先行，构建打包，测试部署，监控优化 工程化体系：代码规范 → 模块化 → 构建工具 → 自动化测试 → CI&amp;#x2F;CD → 监控体系  1. 什么是前端工程化？1.1 定义与目标定义：前端工程化是使用软件工程的方法来组织前端开发流程，通过工具"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="https://www.ninini.site/2026/03/11/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/"><link rel="preconnect" href="//cdn.cbd.int"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: {"enable":true,"img":"https://upload-bbs.miyoushe.com/upload/2024/07/27/125766904/ba62475f396df9de3316a08ed9e65d86_5680958632268053399..png"},
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: undefined,
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"你好鸭👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"古德莫宁👋","startTime":6,"endTime":9},{"greeting":"上午好👋认真工作学习","startTime":10,"endTime":10},{"greeting":"11点多了, 点外卖了","startTime":11,"endTime":11},{"greeting":"午安👋","startTime":12,"endTime":14},{"greeting":"🌈充实辛苦的一天","startTime":14,"endTime":18},{"greeting":"19点喽, 吃饭了吗🍔","startTime":19,"endTime":19},{"greeting":"晚上好👋请高兴地休息吧😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 多喝热水","🏠 早睡早起"]},
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: OHNII","link":"链接: ","source":"来源: 2ndMind","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '2ndMind',
+  title: '前端工程化完整指南',
+  postAI: '',
+  pageFillDescription: '前端工程化完整指南, 核心流程（记忆关键）, 1. 什么是前端工程化？, 1.1 定义与目标, 1.2 工程化体系架构, 2. Webpack 构建原理, 2.1 核心概念, 2.2 Webpack 完整构建流程, 2.3 核心概念详解, 2.4 Webpack 优化策略, 3. Vite 构建原理, 3.1 核心特点, 3.2 Vite 工作原理, 3.3 Vite 优化策略, 4. 代码规范体系, 4.1 规范工具链, 4.2 规范流程, 5. 自动化测试, 5.1 测试类型, 5.2 测试策略, 6. CIx2FCD 自动化部署, 6.1 CIx2FCD 流程, 6.2 部署策略, 7. 性能监控体系, 7.1 监控类型, 7.2 监控指标, 8. 面试口述版本, 8.1 什么是前端工程化？, 8.2 Webpack 的构建流程是什么？, 8.3 Webpack 和 Vite 的区别？, 9. 高频追问, Q1 如何优化 Webpack 构建速度？, Q2 如何实现代码规范自动化？, Q3 CIx2FCD 的完整流程是什么？, Q4 如何做前端监控？, 10. 实战经验, 经验1：从 0 搭建工程化体系, 经验2：Webpack 构建优化实战, 经验3：性能监控实践, 11. 记忆路线图, 12. 总结前端工程化完整指南核心流程记忆关键记忆口诀规范先行构建打包测试部署监控优化工程化体系代码规范模块化构建工具自动化测试监控体系什么是前端工程化定义与目标定义前端工程化是使用软件工程的方法来组织前端开发流程通过工具规范和流程来提升开发效率保证代码质量降低维护成本的一套完整体系核心目标提升开发效率自动化工具保证代码质量规范和测试降低维护成本模块化和文档优化用户体验性能优化工程化体系架构前端工程化开发阶段代码规范模块化组件化开发工具构建阶段构建工具编译转译代码优化压缩资源处理图片测试阶段单元测试集成测试测试性能测试部署阶段容器化自动部署版本管理运维阶段性能监控错误监控用户行为分析埋点日志系统构建原理核心概念五大核心入口构建的起点从这里开始分析依赖可以是单入口或多入口输出打包后的文件输出位置和命名规则加载器转换非文件图片等从右到左或从下到上链式调用插件执行更广泛的任务打包优化资源管理环境变量注入等贯穿整个构建生命周期模式开发模式快速构建详细错误信息生产模式代码压缩优化完整构建流程三大阶段初始化编译输出阶段初始化读取配置文件合并配置配置文件参数默认配置创建对象负责整个构建流程加载所有配置的插件调用触发和钩子初始化完成准备开始编译阶段编译触发钩子开始编译创建对象负责具体的编译工作触发钩子开始构建模块详细编译过程步骤确定入口从配置的开始为每个入口创建一个步骤编译模块读取文件内容使用对应的转换文件解析抽象语法树找出依赖递归编译依赖模块步骤完成模块编译得到每个模块的最终内容生成模块之间的依赖关系图阶段输出根据依赖关系组装成将转换成文件写入文件系统触发钩子完成构建流程图初始化读取配置创建加载插件编译确定入口编译模块读取文件转换解析收集依赖递归编译完成模块编译生成依赖关系图输出组装转换成写入文件系统完成构建核心概念详解模块中的一切资源都是模块包括图片字体等支持图片代码块入口文件生成的通过动态导入生成的运行时代码生成的打包文件最终输出的文件一个对应一个作用于单个文件转换文件内容在编译阶段执行例如作用于整个构建过程执行更广泛的任务贯穿整个生命周期例如优化策略构建速度优化缓存最重要使用文件系统缓存多进程打包缩小构建范围预编译第三方库减少解析打包体积优化代码分割删除未使用的代码压缩代码外部化依赖使用按需加载动态运行时性能优化按需加载路由懒加载预加载预获取图片优化小图转提取构建原理核心特点与的本质区别特性构建方式打包所有模块按需加载启动方式启动前需要打包直接启动无需打包冷启动速度慢几分钟快秒级热更新速度慢需要重新打包快只更新变化模块生产构建浏览器支持所有浏览器现代浏览器支持工作原理开发环境流程启动开发服务器秒级无需打包直接启动预构建依赖只构建一次将转为合并多个模块浏览器请求模块时实时编译利用浏览器原生按需编译利用浏览器缓存热更新只更新变化的模块不需要重新打包工作流程图启动服务器秒级预构建依赖一次性浏览器请求模块实时编译按需返回编译结果浏览器加载生产环境使用打包代码分割压缩输出优化后的文件优化策略依赖预构建优化强制预构建常用依赖排除不需要预构建的包代码分割按库分割库工具库按路由分割资源优化图片压缩压缩提取代码规范体系规范工具链代码质量检查检查代码错误统一代码风格自动修复问题代码格式化统一代码格式自动格式化与配合使用自动化检查提交前检查提交信息检查使用提交信息规范规范提交信息格式便于生成便于版本管理规范流程开发时编辑器自动格式化保存时自动修复提交前检查只检查暂存区文件提交信息检查提交成功自动化测试测试类型单元测试测试单个函数或组件工具覆盖率要求以上集成测试测试多个模块的协作工具测试用户交互测试测试完整的用户流程工具模拟真实用户操作性能测试测试页面性能工具监控核心指标测试策略测试金字塔测试少量集成测试适量单元测试大量测试原则单元测试覆盖核心逻辑集成测试覆盖关键流程测试覆盖核心场景自动化部署流程完整流程代码提交触发流程检出代码安装依赖代码检查运行测试构建打包测试通过触发流程部署到测试环境自动化测试部署到生产环境健康检查监控告警性能监控错误监控告警通知部署策略蓝绿部署同时运行两个版本切换流量到新版本出问题快速回滚灰度发布逐步放量到新版本观察新版本表现降低风险容器化部署使用环境一致性快速部署和回滚性能监控体系监控类型性能监控查询时间连接时间白屏时间解析时间页面加载时间错误监控运行时错误未捕获错误资源加载错误接口请求错误用户行为分析页面浏览事件追踪点击提交用户路径分析页面停留时间监控指标核心指标最大内容绘制首次输入延迟累积布局偏移其他指标首次内容绘制首字节时间可交互时间面试口述版本什么是前端工程化回答框架前端工程化是使用软件工程的方法来组织前端开发的完整体系主要包括以下几个方面第一是代码规范通过检查代码质量统一代码格式配合在提交前自动检查确保团队代码风格一致还有规范提交信息方便后续维护和版本管理第二是构建工具主流的有和是基于的打包工具构建流程分为初始化编译和输出三个阶段则是基于的构建工具开发环境直接启动无需打包利用浏览器原生按需加载启动速度和热更新速度都非常快第三是自动化测试包括单元测试集成测试和测试通过自动化测试保证代码质量减少线上第四是使用或实现自动化部署代码提交后自动执行代码检查运行测试构建打包部署上线的完整流程第五是监控体系包括性能监控错误监控和用户行为分析通过监控及时发现和解决问题持续优化用户体验工程化的核心目标是提升开发效率保证代码质量降低维护成本的构建流程是什么回答框架的构建流程分为三个阶段第一阶段是初始化会读取配置文件合并配置参数创建对象加载所有配置的插件这个阶段主要是准备工作第二阶段是编译这是最核心的阶段从入口文件开始使用对应的转换文件内容然后解析找出依赖递归编译所有依赖模块最终生成模块依赖关系图具体来说编译模块时会经历读取文件转换解析收集依赖递归编译依赖这个过程会处理所有类型的资源包括图片等第三阶段是输出根据依赖关系将模块组装成然后将转换成最终的文件写入文件系统整个流程中负责转换单个文件负责执行更广泛的任务贯穿整个生命周期和的区别回答框架和的核心区别在于构建方式是模式它会在启动前打包所有模块所以冷启动比较慢通常需要几十秒到几分钟热更新时也需要重新打包速度也比较慢但它的生态非常成熟插件丰富可以兼容所有浏览器是模式它利用浏览器原生的开发环境直接启动无需打包冷启动只需要秒级它会使用预构建依赖然后在浏览器请求模块时实时编译热更新时只更新变化的模块速度非常快生产环境使用打包选择建议新项目推荐开发体验更好老项目如果迁移成本高可以继续使用如果需要兼容等老浏览器必须使用高频追问如何优化构建速度答案缓存最重要使用文件系统缓存效果最明显多进程打包使用适合大型项目缩小构建范围使用减少不必要的文件处理预编译第三方库只编译一次减少解析减少使用指定目录效果构建时间从分钟优化到分钟如何实现代码规范自动化答案工具链流程开发时编辑器自动格式化保存时自动修复提交前检查提交时提交信息检查效果团队代码风格统一减少时间提高代码质量的完整流程是什么答案代码提交触发持续集成检出代码安装依赖代码检查运行测试构建打包持续部署部署到测试环境自动化测试部署到生产环境健康检查监控告警性能监控错误监控告警通知如何做前端监控答案性能监控自定义性能指标错误监控错误错误资源加载错误接口错误用户行为分析页面浏览事件追踪用户路径页面停留时间上报方式推荐对象实战经验经验从搭建工程化体系步骤初始化项目选择构建工具配置配置路径别名代码规范配置配置配置自动化测试配置配置设置测试覆盖率配置自动化测试构建部署监控体系接入性能监控接入错误监控配置告警规则经验构建优化实战问题项目构建时间分钟开发体验差优化方案开启缓存使用预编译第三方库使用多进程打包缩小构建范围使用替代结果构建时间分钟分钟热更新秒秒经验性能监控实践问题不知道页面性能如何用户体验差解决方案接入监控各项性能指标接入监控核心指标接入错误监控捕获各类错误接入用户行为分析了解用户使用情况结果首屏加载时间接口错误率降低用户体验提升转化率提高记忆路线图前端工程化核心概念定义与目标体系架构构建工具构建流程初始化编译输出核心概念优化策略工作原理优化策略代码规范代码质量代码格式自动检查提交规范自动化测试单元测试集成测试测试持续集成持续部署容器化监控体系性能监控错误监控用户行为分析总结核心要点工程化是提升开发效率保证代码质量的完整体系构建流程初始化编译输出基于开发体验更好代码规范通过工具链自动化实现自动化部署监控体系保证线上质量记忆口诀规范先行构建打包测试部署监控优化三阶段初始化编译输出快速启动按需加载代码规范自动化全流程检查测试构建部署',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026年03月31日 02:33:24',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tom_jerry/31.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="/" accesskey="h"><div class="title">2ndMind</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=14392214326&amp;server=netease&amp;type=playlist"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-music"></use></svg><span> 音乐馆</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AI/" style="font-size: 1.05rem;">AI<sup>2</sup></a><a href="/tags/CI-CD/" style="font-size: 1.05rem;">CI/CD<sup>1</sup></a><a href="/tags/DevOps/" style="font-size: 1.05rem;">DevOps<sup>1</sup></a><a href="/tags/Docker/" style="font-size: 1.05rem;">Docker<sup>5</sup></a><a href="/tags/Jenkins/" style="font-size: 1.05rem;">Jenkins<sup>1</sup></a><a href="/tags/Kubernetes/" style="font-size: 1.05rem;">Kubernetes<sup>1</sup></a><a href="/tags/MPC/" style="font-size: 1.05rem;">MPC<sup>2</sup></a><a href="/tags/Openclaw/" style="font-size: 1.05rem;">Openclaw<sup>1</sup></a><a href="/tags/WebSocket/" style="font-size: 1.05rem;">WebSocket<sup>1</sup></a><a href="/tags/git/" style="font-size: 1.05rem;">git<sup>1</sup></a><a href="/tags/github/" style="font-size: 1.05rem;">github<sup>1</sup></a><a href="/tags/javascript/" style="font-size: 1.05rem;">javascript<sup>1</sup></a><a href="/tags/npm/" style="font-size: 1.05rem;">npm<sup>1</sup></a><a href="/tags/react/" style="font-size: 1.05rem;">react<sup>1</sup></a><a href="/tags/react-router/" style="font-size: 1.05rem;">react-router<sup>1</sup></a><a href="/tags/redux/" style="font-size: 1.05rem;">redux<sup>1</sup></a><a href="/tags/typescript/" style="font-size: 1.05rem;">typescript<sup>1</sup></a><a href="/tags/vue/" style="font-size: 1.05rem;">vue<sup>4</sup></a><a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.05rem;">工具<sup>1</sup></a><a href="/tags/%E5%B8%B8%E8%A7%81%E4%BB%AC/" style="font-size: 1.05rem;">常见们<sup>10</sup></a><a href="/tags/%E7%BD%91%E7%AB%99/" style="font-size: 1.05rem;">网站<sup>1</sup></a><a href="/tags/%E8%B0%B7%E6%AD%8C/" style="font-size: 1.05rem;">谷歌<sup>1</sup></a><a href="/tags/%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/" style="font-size: 1.05rem;">适配方案<sup>1</sup></a><a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 1.05rem;">面试<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/03/"><span class="card-archive-list-date">三月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">20</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/02/"><span class="card-archive-list-date">二月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">9</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/10/"><span class="card-archive-list-date">十月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/07/"><span class="card-archive-list-date">七月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/08/"><span class="card-archive-list-date">八月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/03/"><span class="card-archive-list-date">三月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E5%B8%B8%E8%A7%81%E4%BB%AC/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>常见们</span></a></span></div></div><h1 class="post-title" itemprop="name headline">前端工程化完整指南</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2026-03-11T11:30:00.000Z" title="发表于 2026年03月11日 11:30:00">2026年03月11日</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2026-03-31T02:33:24.239Z" title="更新于 2026年03月31日 02:33:24">2026年03月31日</time></span></div><div class="meta-secondline"></div></div></div><article class="post-content" id="article-container" itemscope itemtype="https://www.ninini.site/2026/03/11/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/"><header><a href="/tags/%E5%B8%B8%E8%A7%81%E4%BB%AC/" tabindex="-1" itemprop="url">常见们</a><h1 id="CrawlerTitle" itemprop="name headline">前端工程化完整指南</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">OHNII</span><time itemprop="dateCreated datePublished" datetime="2026-03-11T11:30:00.000Z" title="发表于 2026年03月11日 11:30:00">2026年03月11日</time><time itemprop="dateCreated datePublished" datetime="2026-03-31T02:33:24.239Z" title="更新于 2026年03月31日 02:33:24">2026年03月31日</time></header><h2 id="前端工程化完整指南"><a href="#前端工程化完整指南" class="headerlink" title="前端工程化完整指南"></a>前端工程化完整指南</h2><h3 id="核心流程（记忆关键）"><a href="#核心流程（记忆关键）" class="headerlink" title="核心流程（记忆关键）"></a>核心流程（记忆关键）</h3><p><strong>记忆口诀：规范先行，构建打包，测试部署，监控优化</strong></p>
+<p><strong>工程化体系：代码规范 → 模块化 → 构建工具 → 自动化测试 → CI&#x2F;CD → 监控体系</strong></p>
+<hr>
+<h3 id="1-什么是前端工程化？"><a href="#1-什么是前端工程化？" class="headerlink" title="1. 什么是前端工程化？"></a>1. 什么是前端工程化？</h3><h4 id="1-1-定义与目标"><a href="#1-1-定义与目标" class="headerlink" title="1.1 定义与目标"></a>1.1 定义与目标</h4><p><strong>定义：</strong><br>前端工程化是使用软件工程的方法来组织前端开发流程，通过工具、规范和流程来提升开发效率、保证代码质量、降低维护成本的一套完整体系。</p>
+<p><strong>核心目标：</strong></p>
+<ul>
+<li>提升开发效率（自动化工具）</li>
+<li>保证代码质量（规范和测试）</li>
+<li>降低维护成本（模块化和文档）</li>
+<li>优化用户体验（性能优化）</li>
+</ul>
+<h4 id="1-2-工程化体系架构"><a href="#1-2-工程化体系架构" class="headerlink" title="1.2 工程化体系架构"></a>1.2 工程化体系架构</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">前端工程化</span><br><span class="line">├── 开发阶段</span><br><span class="line">│   ├── 代码规范（ESLint、Prettier）</span><br><span class="line">│   ├── 模块化（ES Module、CommonJS）</span><br><span class="line">│   ├── 组件化（Vue、React）</span><br><span class="line">│   └── 开发工具（VSCode、Chrome DevTools）</span><br><span class="line">│</span><br><span class="line">├── 构建阶段</span><br><span class="line">│   ├── 构建工具（Webpack、Vite）</span><br><span class="line">│   ├── 编译转译（Babel、TypeScript）</span><br><span class="line">│   ├── 代码优化（压缩、Tree Shaking）</span><br><span class="line">│   └── 资源处理（图片、CSS）</span><br><span class="line">│</span><br><span class="line">├── 测试阶段</span><br><span class="line">│   ├── 单元测试（Jest、Vitest）</span><br><span class="line">│   ├── 集成测试（Testing Library）</span><br><span class="line">│   ├── E2E 测试（Cypress、Playwright）</span><br><span class="line">│   └── 性能测试（Lighthouse）</span><br><span class="line">│</span><br><span class="line">├── 部署阶段</span><br><span class="line">│   ├── CI/CD（GitHub Actions、GitLab CI）</span><br><span class="line">│   ├── 容器化（Docker）</span><br><span class="line">│   ├── 自动部署（Vercel、Netlify）</span><br><span class="line">│   └── 版本管理（Git、Semantic Versioning）</span><br><span class="line">│</span><br><span class="line">└── 运维阶段</span><br><span class="line">    ├── 性能监控（Performance API）</span><br><span class="line">    ├── 错误监控（Sentry）</span><br><span class="line">    ├── 用户行为分析（埋点）</span><br><span class="line">    └── 日志系统（ELK）</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-Webpack-构建原理"><a href="#2-Webpack-构建原理" class="headerlink" title="2. Webpack 构建原理"></a>2. Webpack 构建原理</h3><h4 id="2-1-核心概念"><a href="#2-1-核心概念" class="headerlink" title="2.1 核心概念"></a>2.1 核心概念</h4><p><strong>五大核心：</strong></p>
+<p><strong>1. Entry（入口）</strong></p>
+<ul>
+<li>构建的起点，Webpack 从这里开始分析依赖</li>
+<li>可以是单入口或多入口</li>
+</ul>
+<p><strong>2. Output（输出）</strong></p>
+<ul>
+<li>打包后的文件输出位置和命名规则</li>
+</ul>
+<p><strong>3. Loader（加载器）</strong></p>
+<ul>
+<li>转换非 JavaScript 文件（CSS、图片、TypeScript 等）</li>
+<li>从右到左（或从下到上）链式调用</li>
+</ul>
+<p><strong>4. Plugin（插件）</strong></p>
+<ul>
+<li>执行更广泛的任务（打包优化、资源管理、环境变量注入等）</li>
+<li>贯穿整个构建生命周期</li>
+</ul>
+<p><strong>5. Mode（模式）</strong></p>
+<ul>
+<li>development：开发模式（快速构建、详细错误信息）</li>
+<li>production：生产模式（代码压缩、优化）</li>
+</ul>
+<h4 id="2-2-Webpack-完整构建流程"><a href="#2-2-Webpack-完整构建流程" class="headerlink" title="2.2 Webpack 完整构建流程"></a>2.2 Webpack 完整构建流程</h4><p><strong>三大阶段：初始化 → 编译 → 输出</strong></p>
+<p><strong>阶段1：初始化（Initialization）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. 读取配置文件（webpack.config.js）</span><br><span class="line">2. 合并配置（配置文件 + Shell 参数 + 默认配置）</span><br><span class="line">3. 创建 Compiler 对象（负责整个构建流程）</span><br><span class="line">4. 加载所有配置的插件（调用 plugin.apply()）</span><br><span class="line">5. 触发 environment 和 afterEnvironment 钩子</span><br><span class="line">6. 初始化完成，准备开始编译</span><br></pre></td></tr></table></figure>
+
+<p><strong>阶段2：编译（Compilation）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">1. 触发 run 钩子，开始编译</span><br><span class="line">2. 创建 Compilation 对象（负责具体的编译工作）</span><br><span class="line">3. 触发 make 钩子，开始构建模块</span><br><span class="line"></span><br><span class="line">详细编译过程：</span><br><span class="line"></span><br><span class="line">步骤1：确定入口</span><br><span class="line">- 从配置的 entry 开始</span><br><span class="line">- 为每个入口创建一个 Chunk</span><br><span class="line"></span><br><span class="line">步骤2：编译模块（Module）</span><br><span class="line">- 读取文件内容</span><br><span class="line">- 使用对应的 Loader 转换文件</span><br><span class="line">- 解析 AST（抽象语法树），找出依赖</span><br><span class="line">- 递归编译依赖模块</span><br><span class="line"></span><br><span class="line">步骤3：完成模块编译</span><br><span class="line">- 得到每个模块的最终内容</span><br><span class="line">- 生成模块之间的依赖关系图（Dependency Graph）</span><br></pre></td></tr></table></figure>
+
+<p><strong>阶段3：输出（Emit）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 根据依赖关系，组装成 Chunk</span><br><span class="line">2. 将 Chunk 转换成文件（Bundle）</span><br><span class="line">3. 写入文件系统</span><br><span class="line">4. 触发 done 钩子，完成构建</span><br></pre></td></tr></table></figure>
+
+<p><strong>流程图：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">初始化</span><br><span class="line">  ├── 读取配置</span><br><span class="line">  ├── 创建 Compiler</span><br><span class="line">  └── 加载插件</span><br><span class="line">      ↓</span><br><span class="line">编译</span><br><span class="line">  ├── 确定入口（Entry）</span><br><span class="line">  ├── 编译模块（Module）</span><br><span class="line">  │   ├── 读取文件</span><br><span class="line">  │   ├── Loader 转换</span><br><span class="line">  │   ├── 解析 AST</span><br><span class="line">  │   ├── 收集依赖</span><br><span class="line">  │   └── 递归编译</span><br><span class="line">  ├── 完成模块编译</span><br><span class="line">  └── 生成依赖关系图</span><br><span class="line">      ↓</span><br><span class="line">输出</span><br><span class="line">  ├── 组装 Chunk</span><br><span class="line">  ├── 转换成 Bundle</span><br><span class="line">  ├── 写入文件系统</span><br><span class="line">  └── 完成构建</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-核心概念详解"><a href="#2-3-核心概念详解" class="headerlink" title="2.3 核心概念详解"></a>2.3 核心概念详解</h4><p><strong>Module（模块）</strong></p>
+<ul>
+<li>Webpack 中的一切资源都是模块</li>
+<li>包括：JS、CSS、图片、字体等</li>
+<li>支持：ES Module、CommonJS、AMD、CSS @import、图片 url</li>
+</ul>
+<p><strong>Chunk（代码块）</strong></p>
+<ul>
+<li>Entry Chunk：入口文件生成的 Chunk</li>
+<li>Normal Chunk：通过 import() 动态导入生成的 Chunk</li>
+<li>Runtime Chunk：运行时代码生成的 Chunk</li>
+</ul>
+<p><strong>Bundle（打包文件）</strong></p>
+<ul>
+<li>最终输出的文件</li>
+<li>一个 Chunk 对应一个 Bundle</li>
+</ul>
+<p><strong>Loader vs Plugin：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Loader：</span><br><span class="line">- 作用于单个文件</span><br><span class="line">- 转换文件内容</span><br><span class="line">- 在编译阶段执行</span><br><span class="line">- 例如：babel-loader、css-loader</span><br><span class="line"></span><br><span class="line">Plugin：</span><br><span class="line">- 作用于整个构建过程</span><br><span class="line">- 执行更广泛的任务</span><br><span class="line">- 贯穿整个生命周期</span><br><span class="line">- 例如：HtmlWebpackPlugin、CleanWebpackPlugin</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-Webpack-优化策略"><a href="#2-4-Webpack-优化策略" class="headerlink" title="2.4 Webpack 优化策略"></a>2.4 Webpack 优化策略</h4><p><strong>构建速度优化：</strong></p>
+<ol>
+<li>缓存（最重要）：使用文件系统缓存</li>
+<li>多进程打包：thread-loader</li>
+<li>缩小构建范围：include、exclude</li>
+<li>DllPlugin：预编译第三方库</li>
+<li>减少 resolve 解析：extensions、alias</li>
+</ol>
+<p><strong>打包体积优化：</strong></p>
+<ol>
+<li>代码分割：splitChunks</li>
+<li>Tree Shaking：删除未使用的代码</li>
+<li>压缩代码：TerserPlugin、CssMinimizerPlugin</li>
+<li>外部化依赖：externals（使用 CDN）</li>
+<li>按需加载：动态 import()</li>
+</ol>
+<p><strong>运行时性能优化：</strong></p>
+<ol>
+<li>按需加载：路由懒加载</li>
+<li>预加载&#x2F;预获取：webpackPrefetch、webpackPreload</li>
+<li>图片优化：小图转 base64</li>
+<li>提取 runtime：runtimeChunk</li>
+</ol>
+<hr>
+<h3 id="3-Vite-构建原理"><a href="#3-Vite-构建原理" class="headerlink" title="3. Vite 构建原理"></a>3. Vite 构建原理</h3><h4 id="3-1-核心特点"><a href="#3-1-核心特点" class="headerlink" title="3.1 核心特点"></a>3.1 核心特点</h4><p><strong>与 Webpack 的本质区别：</strong></p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Webpack</th>
+<th>Vite</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>构建方式</td>
+<td>Bundle（打包所有模块）</td>
+<td>ESM（按需加载）</td>
+</tr>
+<tr>
+<td>启动方式</td>
+<td>启动前需要打包</td>
+<td>直接启动，无需打包</td>
+</tr>
+<tr>
+<td>冷启动速度</td>
+<td>慢（30s - 几分钟）</td>
+<td>快（秒级）</td>
+</tr>
+<tr>
+<td>热更新速度</td>
+<td>慢（需要重新打包）</td>
+<td>快（只更新变化模块）</td>
+</tr>
+<tr>
+<td>生产构建</td>
+<td>Webpack</td>
+<td>Rollup</td>
+</tr>
+<tr>
+<td>浏览器支持</td>
+<td>所有浏览器</td>
+<td>现代浏览器（支持 ESM）</td>
+</tr>
+</tbody></table>
+<h4 id="3-2-Vite-工作原理"><a href="#3-2-Vite-工作原理" class="headerlink" title="3.2 Vite 工作原理"></a>3.2 Vite 工作原理</h4><p><strong>开发环境流程：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1. 启动开发服务器（秒级）</span><br><span class="line">   - 无需打包，直接启动</span><br><span class="line"></span><br><span class="line">2. 预构建依赖（esbuild）</span><br><span class="line">   - 只构建一次</span><br><span class="line">   - 将 CommonJS 转为 ESM</span><br><span class="line">   - 合并多个模块</span><br><span class="line"></span><br><span class="line">3. 浏览器请求模块时，实时编译</span><br><span class="line">   - 利用浏览器原生 ESM</span><br><span class="line">   - 按需编译</span><br><span class="line">   - 利用浏览器缓存</span><br><span class="line"></span><br><span class="line">4. 热更新（HMR）</span><br><span class="line">   - 只更新变化的模块</span><br><span class="line">   - 不需要重新打包</span><br></pre></td></tr></table></figure>
+
+<p><strong>工作流程图：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">启动服务器（秒级）</span><br><span class="line">  ↓</span><br><span class="line">预构建依赖（esbuild，一次性）</span><br><span class="line">  ↓</span><br><span class="line">浏览器请求模块</span><br><span class="line">  ↓</span><br><span class="line">实时编译（按需）</span><br><span class="line">  ↓</span><br><span class="line">返回编译结果</span><br><span class="line">  ↓</span><br><span class="line">浏览器加载（ESM）</span><br></pre></td></tr></table></figure>
+
+<p><strong>生产环境：</strong></p>
+<ul>
+<li>使用 Rollup 打包</li>
+<li>代码分割、压缩</li>
+<li>输出优化后的文件</li>
+</ul>
+<h4 id="3-3-Vite-优化策略"><a href="#3-3-Vite-优化策略" class="headerlink" title="3.3 Vite 优化策略"></a>3.3 Vite 优化策略</h4><p><strong>依赖预构建优化：</strong></p>
+<ul>
+<li>强制预构建常用依赖</li>
+<li>排除不需要预构建的包</li>
+</ul>
+<p><strong>代码分割：</strong></p>
+<ul>
+<li>按库分割（vue、ui 库、工具库）</li>
+<li>按路由分割</li>
+</ul>
+<p><strong>资源优化：</strong></p>
+<ul>
+<li>图片压缩</li>
+<li>Gzip 压缩</li>
+<li>CSS 提取</li>
+</ul>
+<hr>
+<h3 id="4-代码规范体系"><a href="#4-代码规范体系" class="headerlink" title="4. 代码规范体系"></a>4. 代码规范体系</h3><h4 id="4-1-规范工具链"><a href="#4-1-规范工具链" class="headerlink" title="4.1 规范工具链"></a>4.1 规范工具链</h4><p><strong>ESLint（代码质量检查）</strong></p>
+<ul>
+<li>检查代码错误</li>
+<li>统一代码风格</li>
+<li>自动修复问题</li>
+</ul>
+<p><strong>Prettier（代码格式化）</strong></p>
+<ul>
+<li>统一代码格式</li>
+<li>自动格式化</li>
+<li>与 ESLint 配合使用</li>
+</ul>
+<p><strong>Git Hooks（自动化检查）</strong></p>
+<ul>
+<li>pre-commit：提交前检查</li>
+<li>commit-msg：提交信息检查</li>
+<li>使用 husky + lint-staged</li>
+</ul>
+<p><strong>Commitlint（提交信息规范）</strong></p>
+<ul>
+<li>规范提交信息格式</li>
+<li>便于生成 CHANGELOG</li>
+<li>便于版本管理</li>
+</ul>
+<h4 id="4-2-规范流程"><a href="#4-2-规范流程" class="headerlink" title="4.2 规范流程"></a>4.2 规范流程</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">开发时</span><br><span class="line">  ↓</span><br><span class="line">编辑器自动格式化（Prettier）</span><br><span class="line">  ↓</span><br><span class="line">保存时自动修复（ESLint --fix）</span><br><span class="line">  ↓</span><br><span class="line">提交前检查（pre-commit hook）</span><br><span class="line">  ↓</span><br><span class="line">只检查暂存区文件（lint-staged）</span><br><span class="line">  ↓</span><br><span class="line">提交信息检查（commit-msg hook）</span><br><span class="line">  ↓</span><br><span class="line">提交成功</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-自动化测试"><a href="#5-自动化测试" class="headerlink" title="5. 自动化测试"></a>5. 自动化测试</h3><h4 id="5-1-测试类型"><a href="#5-1-测试类型" class="headerlink" title="5.1 测试类型"></a>5.1 测试类型</h4><p><strong>单元测试（Unit Test）</strong></p>
+<ul>
+<li>测试单个函数或组件</li>
+<li>工具：Jest、Vitest</li>
+<li>覆盖率要求：80% 以上</li>
+</ul>
+<p><strong>集成测试（Integration Test）</strong></p>
+<ul>
+<li>测试多个模块的协作</li>
+<li>工具：Testing Library</li>
+<li>测试用户交互</li>
+</ul>
+<p><strong>E2E 测试（End-to-End Test）</strong></p>
+<ul>
+<li>测试完整的用户流程</li>
+<li>工具：Cypress、Playwright</li>
+<li>模拟真实用户操作</li>
+</ul>
+<p><strong>性能测试</strong></p>
+<ul>
+<li>测试页面性能</li>
+<li>工具：Lighthouse</li>
+<li>监控核心指标</li>
+</ul>
+<h4 id="5-2-测试策略"><a href="#5-2-测试策略" class="headerlink" title="5.2 测试策略"></a>5.2 测试策略</h4><p><strong>测试金字塔：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   E2E 测试（少量）</span><br><span class="line">      ↑</span><br><span class="line"> 集成测试（适量）</span><br><span class="line">      ↑</span><br><span class="line">单元测试（大量）</span><br></pre></td></tr></table></figure>
+
+<p><strong>测试原则：</strong></p>
+<ul>
+<li>单元测试覆盖核心逻辑</li>
+<li>集成测试覆盖关键流程</li>
+<li>E2E 测试覆盖核心场景</li>
+</ul>
+<hr>
+<h3 id="6-CI-CD-自动化部署"><a href="#6-CI-CD-自动化部署" class="headerlink" title="6. CI&#x2F;CD 自动化部署"></a>6. CI&#x2F;CD 自动化部署</h3><h4 id="6-1-CI-CD-流程"><a href="#6-1-CI-CD-流程" class="headerlink" title="6.1 CI&#x2F;CD 流程"></a>6.1 CI&#x2F;CD 流程</h4><p><strong>完整流程：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">代码提交（git push）</span><br><span class="line">  ↓</span><br><span class="line">触发 CI 流程</span><br><span class="line">  ├── 检出代码</span><br><span class="line">  ├── 安装依赖</span><br><span class="line">  ├── 代码检查（ESLint）</span><br><span class="line">  ├── 运行测试（Jest）</span><br><span class="line">  └── 构建打包（Webpack/Vite）</span><br><span class="line">  ↓</span><br><span class="line">测试通过</span><br><span class="line">  ↓</span><br><span class="line">触发 CD 流程</span><br><span class="line">  ├── 部署到测试环境</span><br><span class="line">  ├── 自动化测试（E2E）</span><br><span class="line">  ├── 部署到生产环境</span><br><span class="line">  └── 健康检查</span><br><span class="line">  ↓</span><br><span class="line">监控告警</span><br><span class="line">  ├── 性能监控</span><br><span class="line">  ├── 错误监控</span><br><span class="line">  └── 告警通知</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-2-部署策略"><a href="#6-2-部署策略" class="headerlink" title="6.2 部署策略"></a>6.2 部署策略</h4><p><strong>蓝绿部署：</strong></p>
+<ul>
+<li>同时运行两个版本</li>
+<li>切换流量到新版本</li>
+<li>出问题快速回滚</li>
+</ul>
+<p><strong>灰度发布：</strong></p>
+<ul>
+<li>逐步放量到新版本</li>
+<li>观察新版本表现</li>
+<li>降低风险</li>
+</ul>
+<p><strong>容器化部署：</strong></p>
+<ul>
+<li>使用 Docker</li>
+<li>环境一致性</li>
+<li>快速部署和回滚</li>
+</ul>
+<hr>
+<h3 id="7-性能监控体系"><a href="#7-性能监控体系" class="headerlink" title="7. 性能监控体系"></a>7. 性能监控体系</h3><h4 id="7-1-监控类型"><a href="#7-1-监控类型" class="headerlink" title="7.1 监控类型"></a>7.1 监控类型</h4><p><strong>性能监控：</strong></p>
+<ul>
+<li>DNS 查询时间</li>
+<li>TCP 连接时间</li>
+<li>白屏时间</li>
+<li>DOM 解析时间</li>
+<li>页面加载时间</li>
+<li>Web Vitals（LCP、FID、CLS）</li>
+</ul>
+<p><strong>错误监控：</strong></p>
+<ul>
+<li>JS 运行时错误</li>
+<li>Promise 未捕获错误</li>
+<li>资源加载错误</li>
+<li>接口请求错误</li>
+</ul>
+<p><strong>用户行为分析：</strong></p>
+<ul>
+<li>页面浏览（PV&#x2F;UV）</li>
+<li>事件追踪（点击、提交）</li>
+<li>用户路径分析</li>
+<li>页面停留时间</li>
+</ul>
+<h4 id="7-2-监控指标"><a href="#7-2-监控指标" class="headerlink" title="7.2 监控指标"></a>7.2 监控指标</h4><p><strong>核心指标（Web Vitals）：</strong></p>
+<ul>
+<li>LCP（Largest Contentful Paint）：最大内容绘制，&lt; 2.5s</li>
+<li>FID（First Input Delay）：首次输入延迟，&lt; 100ms</li>
+<li>CLS（Cumulative Layout Shift）：累积布局偏移，&lt; 0.1</li>
+</ul>
+<p><strong>其他指标：</strong></p>
+<ul>
+<li>FCP（First Contentful Paint）：首次内容绘制</li>
+<li>TTFB（Time to First Byte）：首字节时间</li>
+<li>TTI（Time to Interactive）：可交互时间</li>
+</ul>
+<hr>
+<h3 id="8-面试口述版本"><a href="#8-面试口述版本" class="headerlink" title="8. 面试口述版本"></a>8. 面试口述版本</h3><h4 id="8-1-什么是前端工程化？"><a href="#8-1-什么是前端工程化？" class="headerlink" title="8.1 什么是前端工程化？"></a>8.1 什么是前端工程化？</h4><p><strong>回答框架：</strong></p>
+<p>“前端工程化是使用软件工程的方法来组织前端开发的完整体系，主要包括以下几个方面：</p>
+<p><strong>第一是代码规范</strong><br>通过 ESLint 检查代码质量，Prettier 统一代码格式，配合 Git Hooks 在提交前自动检查，确保团队代码风格一致。还有 Commitlint 规范提交信息，方便后续维护和版本管理。</p>
+<p><strong>第二是构建工具</strong><br>主流的有 Webpack 和 Vite。Webpack 是基于 Bundle 的打包工具，构建流程分为初始化、编译和输出三个阶段。Vite 则是基于 ESM 的构建工具，开发环境直接启动无需打包，利用浏览器原生 ESM 按需加载，启动速度和热更新速度都非常快。</p>
+<p><strong>第三是自动化测试</strong><br>包括单元测试、集成测试和 E2E 测试。通过自动化测试保证代码质量，减少线上 bug。</p>
+<p><strong>第四是 CI&#x2F;CD</strong><br>使用 GitHub Actions 或 GitLab CI 实现自动化部署。代码提交后自动执行代码检查、运行测试、构建打包、部署上线的完整流程。</p>
+<p><strong>第五是监控体系</strong><br>包括性能监控、错误监控和用户行为分析。通过监控及时发现和解决问题，持续优化用户体验。</p>
+<p>工程化的核心目标是提升开发效率、保证代码质量、降低维护成本。”</p>
+<h4 id="8-2-Webpack-的构建流程是什么？"><a href="#8-2-Webpack-的构建流程是什么？" class="headerlink" title="8.2 Webpack 的构建流程是什么？"></a>8.2 Webpack 的构建流程是什么？</h4><p><strong>回答框架：</strong></p>
+<p>“Webpack 的构建流程分为三个阶段：</p>
+<p><strong>第一阶段是初始化</strong><br>Webpack 会读取配置文件，合并配置参数，创建 Compiler 对象，加载所有配置的插件。这个阶段主要是准备工作。</p>
+<p><strong>第二阶段是编译</strong><br>这是最核心的阶段。Webpack 从入口文件开始，使用对应的 Loader 转换文件内容，然后解析 AST 找出依赖，递归编译所有依赖模块，最终生成模块依赖关系图。</p>
+<p>具体来说，编译模块时会经历：读取文件 → Loader 转换 → 解析 AST → 收集依赖 → 递归编译依赖。这个过程会处理所有类型的资源，包括 JS、CSS、图片等。</p>
+<p><strong>第三阶段是输出</strong><br>根据依赖关系将模块组装成 Chunk，然后将 Chunk 转换成最终的 Bundle 文件，写入文件系统。</p>
+<p>整个流程中，Loader 负责转换单个文件，Plugin 负责执行更广泛的任务，贯穿整个生命周期。”</p>
+<h4 id="8-3-Webpack-和-Vite-的区别？"><a href="#8-3-Webpack-和-Vite-的区别？" class="headerlink" title="8.3 Webpack 和 Vite 的区别？"></a>8.3 Webpack 和 Vite 的区别？</h4><p><strong>回答框架：</strong></p>
+<p>“Webpack 和 Vite 的核心区别在于构建方式：</p>
+<p><strong>Webpack 是 Bundle 模式</strong><br>它会在启动前打包所有模块，所以冷启动比较慢，通常需要几十秒到几分钟。热更新时也需要重新打包，速度也比较慢。但它的生态非常成熟，插件丰富，可以兼容所有浏览器。</p>
+<p><strong>Vite 是 ESM 模式</strong><br>它利用浏览器原生的 ES Module，开发环境直接启动无需打包，冷启动只需要秒级。它会使用 esbuild 预构建依赖，然后在浏览器请求模块时实时编译。热更新时只更新变化的模块，速度非常快。生产环境使用 Rollup 打包。</p>
+<p><strong>选择建议：</strong><br>新项目推荐 Vite，开发体验更好。老项目如果迁移成本高，可以继续使用 Webpack。如果需要兼容 IE 等老浏览器，必须使用 Webpack。”</p>
+<hr>
+<h3 id="9-高频追问"><a href="#9-高频追问" class="headerlink" title="9. 高频追问"></a>9. 高频追问</h3><h4 id="Q1-如何优化-Webpack-构建速度？"><a href="#Q1-如何优化-Webpack-构建速度？" class="headerlink" title="Q1: 如何优化 Webpack 构建速度？"></a>Q1: 如何优化 Webpack 构建速度？</h4><p><strong>答案：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">1. 缓存（最重要）</span><br><span class="line">   - 使用文件系统缓存</span><br><span class="line">   - 效果最明显</span><br><span class="line"></span><br><span class="line">2. 多进程打包</span><br><span class="line">   - 使用 thread-loader</span><br><span class="line">   - 适合大型项目</span><br><span class="line"></span><br><span class="line">3. 缩小构建范围</span><br><span class="line">   - 使用 include、exclude</span><br><span class="line">   - 减少不必要的文件处理</span><br><span class="line"></span><br><span class="line">4. DllPlugin</span><br><span class="line">   - 预编译第三方库</span><br><span class="line">   - 只编译一次</span><br><span class="line"></span><br><span class="line">5. 减少 resolve 解析</span><br><span class="line">   - 减少 extensions</span><br><span class="line">   - 使用 alias</span><br><span class="line">   - 指定 modules 目录</span><br><span class="line"></span><br><span class="line">效果：</span><br><span class="line">构建时间从 5 分钟优化到 1 分钟</span><br></pre></td></tr></table></figure>
+
+<h4 id="Q2-如何实现代码规范自动化？"><a href="#Q2-如何实现代码规范自动化？" class="headerlink" title="Q2: 如何实现代码规范自动化？"></a>Q2: 如何实现代码规范自动化？</h4><p><strong>答案：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">工具链：</span><br><span class="line">ESLint + Prettier + husky + lint-staged + commitlint</span><br><span class="line"></span><br><span class="line">流程：</span><br><span class="line">1. 开发时：编辑器自动格式化</span><br><span class="line">2. 保存时：ESLint 自动修复</span><br><span class="line">3. 提交前：Git Hooks 检查</span><br><span class="line">4. 提交时：提交信息检查</span><br><span class="line"></span><br><span class="line">效果：</span><br><span class="line">- 团队代码风格统一</span><br><span class="line">- 减少 Code Review 时间</span><br><span class="line">- 提高代码质量</span><br></pre></td></tr></table></figure>
+
+<h4 id="Q3-CI-CD-的完整流程是什么？"><a href="#Q3-CI-CD-的完整流程是什么？" class="headerlink" title="Q3: CI&#x2F;CD 的完整流程是什么？"></a>Q3: CI&#x2F;CD 的完整流程是什么？</h4><p><strong>答案：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1. 代码提交</span><br><span class="line">   git push → 触发 CI/CD</span><br><span class="line"></span><br><span class="line">2. CI（持续集成）</span><br><span class="line">   - 检出代码</span><br><span class="line">   - 安装依赖</span><br><span class="line">   - 代码检查</span><br><span class="line">   - 运行测试</span><br><span class="line">   - 构建打包</span><br><span class="line"></span><br><span class="line">3. CD（持续部署）</span><br><span class="line">   - 部署到测试环境</span><br><span class="line">   - 自动化测试</span><br><span class="line">   - 部署到生产环境</span><br><span class="line">   - 健康检查</span><br><span class="line"></span><br><span class="line">4. 监控告警</span><br><span class="line">   - 性能监控</span><br><span class="line">   - 错误监控</span><br><span class="line">   - 告警通知</span><br></pre></td></tr></table></figure>
+
+<h4 id="Q4-如何做前端监控？"><a href="#Q4-如何做前端监控？" class="headerlink" title="Q4: 如何做前端监控？"></a>Q4: 如何做前端监控？</h4><p><strong>答案：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1. 性能监控</span><br><span class="line">   - Performance API</span><br><span class="line">   - Web Vitals（LCP、FID、CLS）</span><br><span class="line">   - 自定义性能指标</span><br><span class="line"></span><br><span class="line">2. 错误监控</span><br><span class="line">   - window.onerror（JS 错误）</span><br><span class="line">   - unhandledrejection（Promise 错误）</span><br><span class="line">   - 资源加载错误</span><br><span class="line">   - 接口错误</span><br><span class="line"></span><br><span class="line">3. 用户行为分析</span><br><span class="line">   - 页面浏览（PV/UV）</span><br><span class="line">   - 事件追踪</span><br><span class="line">   - 用户路径</span><br><span class="line">   - 页面停留时间</span><br><span class="line"></span><br><span class="line">4. 上报方式</span><br><span class="line">   - navigator.sendBeacon（推荐）</span><br><span class="line">   - Image 对象</span><br><span class="line">   - fetch/xhr</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="10-实战经验"><a href="#10-实战经验" class="headerlink" title="10. 实战经验"></a>10. 实战经验</h3><h4 id="经验1：从-0-搭建工程化体系"><a href="#经验1：从-0-搭建工程化体系" class="headerlink" title="经验1：从 0 搭建工程化体系"></a>经验1：从 0 搭建工程化体系</h4><p><strong>步骤：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">1. 初始化项目</span><br><span class="line">   - 选择构建工具（Vite/Webpack）</span><br><span class="line">   - 配置 TypeScript</span><br><span class="line">   - 配置路径别名</span><br><span class="line"></span><br><span class="line">2. 代码规范</span><br><span class="line">   - 配置 ESLint + Prettier</span><br><span class="line">   - 配置 husky + lint-staged</span><br><span class="line">   - 配置 commitlint</span><br><span class="line"></span><br><span class="line">3. 自动化测试</span><br><span class="line">   - 配置 Jest/Vitest</span><br><span class="line">   - 配置 Cypress</span><br><span class="line">   - 设置测试覆盖率</span><br><span class="line"></span><br><span class="line">4. CI/CD</span><br><span class="line">   - 配置 GitHub Actions</span><br><span class="line">   - 自动化测试、构建、部署</span><br><span class="line"></span><br><span class="line">5. 监控体系</span><br><span class="line">   - 接入性能监控</span><br><span class="line">   - 接入错误监控</span><br><span class="line">   - 配置告警规则</span><br></pre></td></tr></table></figure>
+
+<h4 id="经验2：Webpack-构建优化实战"><a href="#经验2：Webpack-构建优化实战" class="headerlink" title="经验2：Webpack 构建优化实战"></a>经验2：Webpack 构建优化实战</h4><p><strong>问题：</strong><br>项目构建时间 5 分钟，开发体验差</p>
+<p><strong>优化方案：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1. 开启缓存</span><br><span class="line">   cache: &#123; type: &#x27;filesystem&#x27; &#125;</span><br><span class="line"></span><br><span class="line">2. 使用 DllPlugin</span><br><span class="line">   预编译第三方库</span><br><span class="line"></span><br><span class="line">3. 使用 thread-loader</span><br><span class="line">   多进程打包</span><br><span class="line"></span><br><span class="line">4. 缩小构建范围</span><br><span class="line">   include、exclude</span><br><span class="line"></span><br><span class="line">5. 使用 esbuild-loader</span><br><span class="line">   替代 babel-loader</span><br></pre></td></tr></table></figure>
+
+<p><strong>结果：</strong></p>
+<ul>
+<li>构建时间：5 分钟 → 1 分钟</li>
+<li>热更新：5 秒 → 1 秒</li>
+</ul>
+<h4 id="经验3：性能监控实践"><a href="#经验3：性能监控实践" class="headerlink" title="经验3：性能监控实践"></a>经验3：性能监控实践</h4><p><strong>问题：</strong><br>不知道页面性能如何，用户体验差</p>
+<p><strong>解决方案：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. 接入 Performance API</span><br><span class="line">   监控各项性能指标</span><br><span class="line"></span><br><span class="line">2. 接入 Web Vitals</span><br><span class="line">   监控核心指标</span><br><span class="line"></span><br><span class="line">3. 接入错误监控</span><br><span class="line">   捕获各类错误</span><br><span class="line"></span><br><span class="line">4. 接入用户行为分析</span><br><span class="line">   了解用户使用情况</span><br></pre></td></tr></table></figure>
+
+<p><strong>结果：</strong></p>
+<ul>
+<li>首屏加载时间：3s → 1s</li>
+<li>接口错误率降低 90%</li>
+<li>用户体验提升，转化率提高</li>
+</ul>
+<hr>
+<h3 id="11-记忆路线图"><a href="#11-记忆路线图" class="headerlink" title="11. 记忆路线图"></a>11. 记忆路线图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">前端工程化</span><br><span class="line">├── 核心概念</span><br><span class="line">│   ├── 定义与目标</span><br><span class="line">│   └── 体系架构</span><br><span class="line">│</span><br><span class="line">├── 构建工具</span><br><span class="line">│   ├── Webpack</span><br><span class="line">│   │   ├── 构建流程（初始化 → 编译 → 输出）</span><br><span class="line">│   │   ├── 核心概念（Module、Chunk、Bundle、Loader、Plugin）</span><br><span class="line">│   │   └── 优化策略</span><br><span class="line">│   └── Vite</span><br><span class="line">│       ├── 工作原理（ESM + esbuild）</span><br><span class="line">│       └── 优化策略</span><br><span class="line">│</span><br><span class="line">├── 代码规范</span><br><span class="line">│   ├── ESLint（代码质量）</span><br><span class="line">│   ├── Prettier（代码格式）</span><br><span class="line">│   ├── Git Hooks（自动检查）</span><br><span class="line">│   └── Commitlint（提交规范）</span><br><span class="line">│</span><br><span class="line">├── 自动化测试</span><br><span class="line">│   ├── 单元测试</span><br><span class="line">│   ├── 集成测试</span><br><span class="line">│   └── E2E 测试</span><br><span class="line">│</span><br><span class="line">├── CI/CD</span><br><span class="line">│   ├── 持续集成</span><br><span class="line">│   ├── 持续部署</span><br><span class="line">│   └── 容器化</span><br><span class="line">│</span><br><span class="line">└── 监控体系</span><br><span class="line">    ├── 性能监控</span><br><span class="line">    ├── 错误监控</span><br><span class="line">    └── 用户行为分析</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="12-总结"><a href="#12-总结" class="headerlink" title="12. 总结"></a>12. 总结</h3><p><strong>核心要点：</strong></p>
+<ol>
+<li>工程化是提升开发效率、保证代码质量的完整体系</li>
+<li>Webpack 构建流程：初始化 → 编译 → 输出</li>
+<li>Vite 基于 ESM，开发体验更好</li>
+<li>代码规范通过工具链自动化</li>
+<li>CI&#x2F;CD 实现自动化部署</li>
+<li>监控体系保证线上质量</li>
+</ol>
+<p><strong>记忆口诀：</strong></p>
+<ul>
+<li>规范先行，构建打包，测试部署，监控优化</li>
+<li>Webpack 三阶段：初始化、编译、输出</li>
+<li>Vite 快速启动：ESM 按需加载</li>
+<li>代码规范自动化：ESLint、Prettier、Git Hooks</li>
+<li>CI&#x2F;CD 全流程：检查、测试、构建、部署</li>
+</ul>
+<hr>
+</article><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2026/03/11/Vue-Diff%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Vue Diff算法原理</div></div></a></div><div class="next-post pull-right"><a href="/2026/03/11/JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">JavaScript模块化完整指南</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2026/03/09/CICD%E9%83%A8%E7%BD%B2/" title="CICD部署"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026年03月09日</div><div class="title">CICD部署</div></div></a></div><div><a href="/2026/03/11/JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/" title="JavaScript模块化完整指南"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026年03月11日</div><div class="title">JavaScript模块化完整指南</div></div></a></div><div><a href="/2026/03/09/URL%E8%BE%93%E5%85%A5%E5%88%B0%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93%E5%85%A8%E6%B5%81%E7%A8%8B/" title="从URL输入到页面渲染的全流程"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026年03月09日</div><div class="title">从URL输入到页面渲染的全流程</div></div></a></div><div><a href="/2026/03/11/Vue3%E6%A0%B8%E5%BF%83%E8%80%83%E7%82%B9/" title="Vue3核心考点"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026年03月11日</div><div class="title">Vue3核心考点</div></div></a></div><div><a href="/2026/03/09/%E5%89%8D%E7%AB%AF%E5%AE%89%E5%85%A8/" title="前端安全"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026年03月09日</div><div class="title">前端安全</div></div></a></div><div><a href="/2026/03/11/this%E6%8C%87%E5%90%91/" title="this指向"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026年03月11日</div><div class="title">this指向</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tom_jerry/31.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://twikoo-magic.oss-cn-hangzhou.aliyuncs.com/tusiji/0007.gif" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">可在左下角或上方我的/音乐馆播放音乐; <br/>可通过标签或者分类看文章; <br/>可切换白天跟夜间模式</div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>公告</span></div><div class="announcement_content">笔记了</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97"><span class="toc-number">1.</span> <span class="toc-text">前端工程化完整指南</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%B5%81%E7%A8%8B%EF%BC%88%E8%AE%B0%E5%BF%86%E5%85%B3%E9%94%AE%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">核心流程（记忆关键）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">1. 什么是前端工程化？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-%E5%AE%9A%E4%B9%89%E4%B8%8E%E7%9B%AE%E6%A0%87"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.1 定义与目标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-%E5%B7%A5%E7%A8%8B%E5%8C%96%E4%BD%93%E7%B3%BB%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2 工程化体系架构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Webpack-%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.</span> <span class="toc-text">2. Webpack 构建原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.1.</span> <span class="toc-text">2.1 核心概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-Webpack-%E5%AE%8C%E6%95%B4%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.2 Webpack 完整构建流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.3.3.</span> <span class="toc-text">2.3 核心概念详解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-Webpack-%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="toc-number">1.3.4.</span> <span class="toc-text">2.4 Webpack 优化策略</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Vite-%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.</span> <span class="toc-text">3. Vite 构建原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E6%A0%B8%E5%BF%83%E7%89%B9%E7%82%B9"><span class="toc-number">1.4.1.</span> <span class="toc-text">3.1 核心特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-Vite-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.2.</span> <span class="toc-text">3.2 Vite 工作原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-Vite-%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="toc-number">1.4.3.</span> <span class="toc-text">3.3 Vite 优化策略</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83%E4%BD%93%E7%B3%BB"><span class="toc-number">1.5.</span> <span class="toc-text">4. 代码规范体系</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-%E8%A7%84%E8%8C%83%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="toc-number">1.5.1.</span> <span class="toc-text">4.1 规范工具链</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-%E8%A7%84%E8%8C%83%E6%B5%81%E7%A8%8B"><span class="toc-number">1.5.2.</span> <span class="toc-text">4.2 规范流程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95"><span class="toc-number">1.6.</span> <span class="toc-text">5. 自动化测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-%E6%B5%8B%E8%AF%95%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.6.1.</span> <span class="toc-text">5.1 测试类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-%E6%B5%8B%E8%AF%95%E7%AD%96%E7%95%A5"><span class="toc-number">1.6.2.</span> <span class="toc-text">5.2 测试策略</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-CI-CD-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2"><span class="toc-number">1.7.</span> <span class="toc-text">6. CI&#x2F;CD 自动化部署</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-CI-CD-%E6%B5%81%E7%A8%8B"><span class="toc-number">1.7.1.</span> <span class="toc-text">6.1 CI&#x2F;CD 流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-%E9%83%A8%E7%BD%B2%E7%AD%96%E7%95%A5"><span class="toc-number">1.7.2.</span> <span class="toc-text">6.2 部署策略</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%E4%BD%93%E7%B3%BB"><span class="toc-number">1.8.</span> <span class="toc-text">7. 性能监控体系</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-%E7%9B%91%E6%8E%A7%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.8.1.</span> <span class="toc-text">7.1 监控类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-2-%E7%9B%91%E6%8E%A7%E6%8C%87%E6%A0%87"><span class="toc-number">1.8.2.</span> <span class="toc-text">7.2 监控指标</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E9%9D%A2%E8%AF%95%E5%8F%A3%E8%BF%B0%E7%89%88%E6%9C%AC"><span class="toc-number">1.9.</span> <span class="toc-text">8. 面试口述版本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#8-1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96%EF%BC%9F"><span class="toc-number">1.9.1.</span> <span class="toc-text">8.1 什么是前端工程化？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-2-Webpack-%E7%9A%84%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.9.2.</span> <span class="toc-text">8.2 Webpack 的构建流程是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-3-Webpack-%E5%92%8C-Vite-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">1.9.3.</span> <span class="toc-text">8.3 Webpack 和 Vite 的区别？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E9%AB%98%E9%A2%91%E8%BF%BD%E9%97%AE"><span class="toc-number">1.10.</span> <span class="toc-text">9. 高频追问</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Q1-%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96-Webpack-%E6%9E%84%E5%BB%BA%E9%80%9F%E5%BA%A6%EF%BC%9F"><span class="toc-number">1.10.1.</span> <span class="toc-text">Q1: 如何优化 Webpack 构建速度？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Q2-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83%E8%87%AA%E5%8A%A8%E5%8C%96%EF%BC%9F"><span class="toc-number">1.10.2.</span> <span class="toc-text">Q2: 如何实现代码规范自动化？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Q3-CI-CD-%E7%9A%84%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.10.3.</span> <span class="toc-text">Q3: CI&#x2F;CD 的完整流程是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Q4-%E5%A6%82%E4%BD%95%E5%81%9A%E5%89%8D%E7%AB%AF%E7%9B%91%E6%8E%A7%EF%BC%9F"><span class="toc-number">1.10.4.</span> <span class="toc-text">Q4: 如何做前端监控？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E5%AE%9E%E6%88%98%E7%BB%8F%E9%AA%8C"><span class="toc-number">1.11.</span> <span class="toc-text">10. 实战经验</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%8F%E9%AA%8C1%EF%BC%9A%E4%BB%8E-0-%E6%90%AD%E5%BB%BA%E5%B7%A5%E7%A8%8B%E5%8C%96%E4%BD%93%E7%B3%BB"><span class="toc-number">1.11.1.</span> <span class="toc-text">经验1：从 0 搭建工程化体系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%8F%E9%AA%8C2%EF%BC%9AWebpack-%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96%E5%AE%9E%E6%88%98"><span class="toc-number">1.11.2.</span> <span class="toc-text">经验2：Webpack 构建优化实战</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%8F%E9%AA%8C3%EF%BC%9A%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.11.3.</span> <span class="toc-text">经验3：性能监控实践</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E8%AE%B0%E5%BF%86%E8%B7%AF%E7%BA%BF%E5%9B%BE"><span class="toc-number">1.12.</span> <span class="toc-text">11. 记忆路线图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E6%80%BB%E7%BB%93"><span class="toc-number">1.13.</span> <span class="toc-text">12. 总结</span></a></li></ol></li></ol></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2023 - 2026 By <a class="footer-bar-link" href="/" title="OHNII" target="_blank">OHNII</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">34</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">9</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://hexo.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=14392214326&amp;server=netease&amp;type=playlist"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-music"></use></svg><span> 音乐馆</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AI/" style="font-size: 0.88rem;">AI<sup>2</sup></a><a href="/tags/CI-CD/" style="font-size: 0.88rem;">CI/CD<sup>1</sup></a><a href="/tags/DevOps/" style="font-size: 0.88rem;">DevOps<sup>1</sup></a><a href="/tags/Docker/" style="font-size: 0.88rem;">Docker<sup>5</sup></a><a href="/tags/Jenkins/" style="font-size: 0.88rem;">Jenkins<sup>1</sup></a><a href="/tags/Kubernetes/" style="font-size: 0.88rem;">Kubernetes<sup>1</sup></a><a href="/tags/MPC/" style="font-size: 0.88rem;">MPC<sup>2</sup></a><a href="/tags/Openclaw/" style="font-size: 0.88rem;">Openclaw<sup>1</sup></a><a href="/tags/WebSocket/" style="font-size: 0.88rem;">WebSocket<sup>1</sup></a><a href="/tags/git/" style="font-size: 0.88rem;">git<sup>1</sup></a><a href="/tags/github/" style="font-size: 0.88rem;">github<sup>1</sup></a><a href="/tags/javascript/" style="font-size: 0.88rem;">javascript<sup>1</sup></a><a href="/tags/npm/" style="font-size: 0.88rem;">npm<sup>1</sup></a><a href="/tags/react/" style="font-size: 0.88rem;">react<sup>1</sup></a><a href="/tags/react-router/" style="font-size: 0.88rem;">react-router<sup>1</sup></a><a href="/tags/redux/" style="font-size: 0.88rem;">redux<sup>1</sup></a><a href="/tags/typescript/" style="font-size: 0.88rem;">typescript<sup>1</sup></a><a href="/tags/vue/" style="font-size: 0.88rem;">vue<sup>4</sup></a><a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 0.88rem;">工具<sup>1</sup></a><a href="/tags/%E5%B8%B8%E8%A7%81%E4%BB%AC/" style="font-size: 0.88rem;">常见们<sup>10</sup></a><a href="/tags/%E7%BD%91%E7%AB%99/" style="font-size: 0.88rem;">网站<sup>1</sup></a><a href="/tags/%E8%B0%B7%E6%AD%8C/" style="font-size: 0.88rem;">谷歌<sup>1</sup></a><a href="/tags/%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/" style="font-size: 0.88rem;">适配方案<sup>1</sup></a><a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 0.88rem;">面试<sup>1</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="14392214326" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="https://cdn.cbd.int/hexo-theme-anzhiyu@1.7.0/source/js/utils.js"></script><script src="https://cdn.cbd.int/hexo-theme-anzhiyu@1.7.0/source/js/main.js"></script><script src="https://cdn.cbd.int/hexo-theme-anzhiyu@1.7.0/source/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>var meting_api = "https://meting.qjqq.cn/?server=:server&type=:type&id=:id&auth=:auth&r=:r";
+</script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://cdn.cbd.int/qrcodejs@1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404')
+  }
+})</script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>

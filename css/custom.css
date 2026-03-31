@@ -1,0 +1,13 @@
+/* 去掉行内代码的背景色 */
+code {
+  background-color: transparent !important;
+  padding: 0 !important;
+  color: orange !important;;
+}
+
+/* 保留代码块的样式（多行代码） */
+pre code {
+  background-color: inherit !important;
+  padding: inherit !important;
+  color: inherit !important;;
+}
